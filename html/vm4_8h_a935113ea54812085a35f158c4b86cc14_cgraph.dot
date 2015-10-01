@@ -1,0 +1,13 @@
+digraph "add"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="add",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="readmem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mem_8c.html#a34334a292261ed39a14507162da961ad"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="readreg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$reg_8c.html#a3e87559130953d5fe08bdc8080821228"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="writereg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$reg_8c.html#a6f8be147c9997fc4f9f617d551763bc0"];
+}
