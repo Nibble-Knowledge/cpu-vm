@@ -23,7 +23,7 @@ docs:
 
 clean:
 	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(SRC:.c=.o)
-	rm -rf html gmon.out docs.html $(EXE) *.dyn *.dpi *.lock *.stackdump
+	rm -rf html gmon.out docs.html $(EXE) *.dyn *.dpi *.lock *.stackdump *.db
 
 phony: 
 	true
