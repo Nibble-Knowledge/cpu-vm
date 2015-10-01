@@ -1,5 +1,7 @@
 #include "vm4.h"
 
+/*test*/
+
 int main(int argc, char **argv)
 {
 	int i;
