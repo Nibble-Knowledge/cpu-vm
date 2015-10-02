@@ -3,13 +3,13 @@
 int readinst(char *instr1, char *instr2, char *instr3, char *instr4, char *instr5)
 {
 
-	if(!strncmp(instr1, "add", INSTLEN - 1))
+	if(!strncmp(instr1, "HLT", INSTLEN - 1))
 	{
-		add();
+		hlt();
 	}
-	else if(!strncmp(instr1, "wm", INSTLEN - 1))
+	else if(!strncmp(instr1, "LOD", INSTLEN - 1))
 	{
-		wm();
+		lod();
 	}
 	else if(!strncmp(instr1, "mv", INSTLEN - 1))
 	{
@@ -22,6 +22,42 @@ int readinst(char *instr1, char *instr2, char *instr3, char *instr4, char *instr
 	return 0;
 }
 
+
+void hlt(void){
+	//Exit program, will figure out how to do that later
+}
+
+void lod(unsigned int addrFrom){
+	
+}
+
+void str(unsigned int addrTo){
+
+}
+
+void add(addrToAddFrom){
+
+}
+
+void nop(void){
+
+}
+
+void nnd(void){
+
+}
+
+void cxa(void){
+
+}
+
+void jmp(unsigned int addrToJumpTo){
+
+}
+
+
+
+//TO BE REMOVED
 void add(void)
 {
 	uint8_t val;
