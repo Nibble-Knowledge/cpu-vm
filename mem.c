@@ -3,8 +3,9 @@
 nib *MAINMEM = NULL;
 uint16_t MEMSIZE = 0;
 
-int initmem(uint16_t num)
+int initmem(void)
 {
+	uint16_t num = 65536 / 4;
 	if(num > RESERVEMEM)
 	{
 		if(MAINMEM != NULL && MEMSIZE > 0)
