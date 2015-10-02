@@ -49,3 +49,7 @@
 typedef struct _nibble{
 	unsigned int data : 4;
 } nibble;
+
+
+//Prototypes:
+int mainloop(void);

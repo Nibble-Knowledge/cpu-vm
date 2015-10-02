@@ -1,5 +1,5 @@
-SRC=main.c mem.c util.c inst.c reg.c
-EXE=vm4
+SRC=mainB.c 
+EXE=vm4B
 EXTRACFLAGS=-lm
 EXTRALDFLAGS=-lm
 export SRC
