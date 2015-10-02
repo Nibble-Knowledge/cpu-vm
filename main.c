@@ -43,21 +43,27 @@ int shutdown(int err)
 
 int mainloop(void)
 {
-	char instr[MAXARGS][INSTLEN];
+	char *OPCode;
+	unsigned int instrAddr;
 	char in[MAXLINELEN];
 	char run = 1;	
 
 	while(run)
 	{
 		int i;
-		for(i = 0; i < MAXARGS; i++)
-		{
-			instr[i][0] = '\0';
-		}
+	//	for(i = 0; i < MAXARGS; i++)
+	//	{
+	//		instr[i][0] = '\0';
+	//	}
 		printf("Input: ");
 		fgets(in, MAXLINELEN - 1, stdin);
-		sscanf(in, "%9s %9s %9s %9s %9s", instr[0], instr[1], instr[2], instr[3], instr[4]);
-		if(!strncmp(instr[0], "~q", INSTLEN - 1))
+		sscanf(in, "%s %u", OPCode, instrAddr);
+
+		printf("Retrived: \n OPCode: %s \n instrAddr: %u", OPCode, &instrAddr);
+
+		
+		
+	/*	if(!strncmp(instr[0], "~q", INSTLEN - 1))
 		{
 			puts("Halting");
 			run = 0;
@@ -95,6 +101,8 @@ int mainloop(void)
 		{
 			readinst(instr[0], instr[1], instr[2], instr[3], instr[4]);
 		}
+
+	*/
 	}
 	return shutdown(UNKNOWNERR);
 }

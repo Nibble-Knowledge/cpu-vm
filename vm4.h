@@ -5,9 +5,9 @@
 #include <math.h>
 #include <limits.h>
 
-#define VERSTR "VM4 v0.0"
-#define IOMEM 2
-#define BOOTMEM 4
+#define VERSTR "VM4 v0.1"
+#define IOMEM 3
+#define BOOTMEM 1024
 #define RESERVEMEM (1+IOMEM+BOOTMEM)
 #define NOERR 0
 #define MEMALLOCERR 1
@@ -19,16 +19,18 @@
 #define INSTLEN 10
 #define MAXLINELEN 255
 #define MAXARGS 5
+#define MEMSIZE 65536
 
 #define PLATEND LITTLEEND
 
-#define NUMREG 5
-#define REGSIZE 4
-#define A 0
-#define M1 1
-#define M2 2
-#define M3 3
-#define M4 4
+//Changes made
+#define NUMREG 4
+#define REGSIZE 4 //We have 2 that are 16 also
+#define PC 0
+#define A 1
+#define MEM 2
+#define STAT 3
+
 
 //#define HLT 0
 //#define NOP 1
@@ -44,12 +46,15 @@
 #define NOP 4
 #define NND 5
 #define JMP 6
+<<<<<<< HEAD
 #define CXA 7 
+=======
+#define CXA 7
+>>>>>>> Bailey
 
 typedef struct _nib
 {
 	unsigned int data : 4;
-	unsigned int pad : 4;
 
 } nib;
 

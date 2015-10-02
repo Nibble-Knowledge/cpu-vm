@@ -1,23 +1,55 @@
-#include "vm4.h"
+/*
+Nibble Knowlege
+------------------------------------------------------
+FileName: instB.c
+Description: Contains the decode function definition and function
+	     definitions for each instruction of the instruction
+	     set
+Original Creator: Colton Schmidt
+Last Editor:	  Colton Schmidt
+Date of Last Edit: 01/10/15
+*/
 
-int readinst(char *instr1, char *instr2, char *instr3, char *instr4, char *instr5)
+
+#include "vm4B.h"
+
+
+// Decode fuction
+// Decodes the OP code and calls the appropiate fuction
+int decode( char* op_code, unsigned int address)
 {
 
-	if(!strncmp(instr1, "HLT", INSTLEN - 1))
+	if(!strcmp(op_code, "HLT"))
 	{
 		hlt();
 	}
-	else if(!strncmp(instr1, "LOD", INSTLEN - 1))
+	else if(!strcmp(op_code, "LOD"))
 	{
-		lod();
+		lod(address);
 	}
-	else if(!strncmp(instr1, "mv", INSTLEN - 1))
+	else if(!strcmp(op_code, "STR"))
 	{
-		mv(toreg(instr2), toreg(instr3));
+		str(address);
 	}
-	else if(!strncmp(instr1, "li", INSTLEN - 1))
+	else if(!strcmp(op_code, "ADD"))
 	{
-		li(todata(instr2));
+		add(address);
+	}
+	else if(!strcmp(op_code, "NOP"))
+	{
+		nop();
+	}
+	else if(!strcmp(op_code, "NND"))
+	{
+		nnd(address);
+	}
+	else if(!strcmp(op_code, "JMP"))
+	{
+		jmp(address);
+	}
+	else if(!strcmp(op_code, "CXA"))
+	{
+		cxa();
 	}
 	return 0;
 }
@@ -35,7 +67,7 @@ void str(unsigned int addrTo){
 
 }
 
-void add(addrToAddFrom){
+void add(unsigned int addrToAddFrom){
 
 }
 
