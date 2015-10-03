@@ -1,11 +1,14 @@
-/* 
-* Nibble Knowledge CPU VM
-* Header file container deffinitions and constants
-* used throughout the VM
-* 
-* Author: Bailey Tye
-* Last edit: October 1, 2015
-* Created: October 1, 2015
+
+/*
+Nibble Knowlege
+------------------------------------------------------
+FileName: vm4B.h.c
+Description: Contains the definitions and constants used thoughout
+	     the VM
+Original Creator: Bailey Tye
+Last Editor:      Bailey Tye
+Date of Last Edit: 03/10/15
+Date of Creation:  01/10/15
 */
 
 
@@ -42,14 +45,32 @@
 #define JMP 6
 #define CXA 7
 
+#define REGISTER16BIT 0
+#define REGISTER4BIT 1
 
-/*
-* Structure of a nibble
-*/
+
+// Structure of a nibble
+
 typedef struct _nibble{
 	unsigned int data : 4;
 } nibble;
 
+// Structure of the 16 bit registers
+typedef struct _register16{
+	unsigned int reg_type;
+	uint16_t contents16;
+	unsigned int contents4: 4;
+} reg;
 
-//Prototypes:
+//--------------------Prototypes----------------------//
+
+
 int mainloop(void);
+
+
+/* Decode function
+*  Decodes the OP code and Calls the appropiate instruction
+*/
+void decode(char* op_code, unsigned int address);
+
+

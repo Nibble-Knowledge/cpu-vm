@@ -32,6 +32,13 @@
 #define STAT 3
 
 
+//#define HLT 0
+//#define NOP 1
+//#define ADD 2
+//#define WM 3
+//#define LI 4
+
+// Define OP codes
 #define HLT 0
 #define LOD 1
 #define STR 2
@@ -39,7 +46,11 @@
 #define NOP 4
 #define NND 5
 #define JMP 6
+<<<<<<< HEAD
+#define CXA 7 
+=======
 #define CXA 7
+>>>>>>> Bailey
 
 typedef struct _nib
 {

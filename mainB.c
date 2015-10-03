@@ -1,17 +1,23 @@
 /*
-* Nibble Knowledge CPU VM
-* main.c
-* 
-*
-* Author: Bailey Tye
-* 
+Nibble Knowlege
+------------------------------------------------------
+FileName: mainB.c
+Description: Contains the main function to initialize everything,
+	     and the mainloop to run the VM
+Original Creator: Bailey Tye
+Last Editor:      Bailey Tye
+Date of Last Edit: 03/10/15
+Date of Creation:  01/10/15
 */
 
 
+//Includes
 #include "vm4B.h"
 
 
-
+/*
+* Main function initializes registers and memory, then starts the main loop
+*/
 int main(int argc, char** argv){
 
 	int i;
@@ -33,13 +39,15 @@ int main(int argc, char** argv){
 }
 
 
+/*
+* Main loop used to continuously ask for user input
+*/
 int mainloop(void){
 
 	char op_code[100];
 	unsigned int inst_addr;
 	char run = 1;
 	char in[100];
-	char garbage;
 
 	while(1){
 
