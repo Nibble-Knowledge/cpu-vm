@@ -1,13 +1,13 @@
 /*
-Nibble Knowlege
-------------------------------------------------------
-FileName: mainB.c
-Description: Contains the main function to initialize everything,
-	     and the mainloop to run the VM
-Original Creator: Bailey Tye
-Last Editor:      Bailey Tye
-Date of Last Edit: 03/10/15
-Date of Creation:  01/10/15
+* Nibble Knowlege
+* ------------------------------------------------------
+* FileName: mainB.c
+* Description: Contains the main function to initialize everything,
+*	       and the mainloop to run the VM
+* Original Creator:  Bailey Tye
+* Date of Creation:  01/10/15
+* Last Editor:       Colton Schmidt
+* Date of Last Edit: 03/10/15
 */
 
 
