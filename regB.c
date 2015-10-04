@@ -1,14 +1,13 @@
-
 /*
-Nibble Knowlege
-------------------------------------------------------
-FileName: regB.c
-Description: Contains the functions used to initialize, read
-	     and write to and from registers
-Original Creator: Bailey Tye
-Last Editor:      Bailey Tye
-Date of Last Edit: 03/10/15
-Date of Creation:  01/10/15
+* Nibble Knowlege
+* ------------------------------------------------------
+* FileName: regB.c
+* Description: Contains the functions used to initialize, read
+* 	       and write to and from registers
+* Original Creator:  Bailey Tye
+* Date of Creation:  01/10/15
+* Last Editor:       Colton Schmidt
+* Date of Last Edit: 03/10/15
 */
 
 
