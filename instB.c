@@ -1,13 +1,14 @@
 /*
-Nibble Knowlege
-------------------------------------------------------
-FileName: instB.c
-Description: Contains the decode function definition and function
-	     definitions for each instruction of the instruction
-	     set
-Original Creator: Colton Schmidt
-Last Editor:	  Colton Schmidt
-Date of Last Edit: 01/10/15
+* Nibble Knowlege
+* ------------------------------------------------------
+* FileName: instB.c
+* Description: Contains the decode function definition and function
+*	       definitions for each instruction of the instruction
+*	       set
+* Original Creator:  Colton Schmidt
+* Date of Creation:  01/10/15
+* Last Editor:	     Colton Schmidt
+* Date of Last Edit: 01/10/15
 */
 
 
@@ -59,15 +60,15 @@ void hlt(void){
 	//Exit program, will figure out how to do that later
 }
 
-void lod(unsigned int addrFrom){
+void lod(unsigned int addressFrom){
 	
 }
 
-void str(unsigned int addrTo){
+void str(unsigned int addressTo){
 
 }
 
-void add(unsigned int addrToAddFrom){
+void add(unsigned int addAddress){
 
 }
 
@@ -75,7 +76,7 @@ void nop(void){
 
 }
 
-void nnd(void){
+void nnd(unsigned int nndAddress){
 
 }
 
@@ -83,7 +84,7 @@ void cxa(void){
 
 }
 
-void jmp(unsigned int addrToJumpTo){
+void jmp(unsigned int jumpAddress){
 
 }
 

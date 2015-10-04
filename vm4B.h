@@ -45,6 +45,7 @@ Date of Creation:  01/10/15
 #define JMP 6
 #define CXA 7
 
+
 #define REGISTER16BIT 0
 #define REGISTER4BIT 1
 
@@ -55,8 +56,8 @@ typedef struct _nibble{
 	unsigned int data : 4;
 } nibble;
 
-// Structure of the 16 bit registers
-typedef struct _register16{
+// Structure of the registers
+typedef struct _register{
 	unsigned int reg_type;
 	uint16_t contents16;
 	unsigned int contents4: 4;
@@ -67,8 +68,8 @@ typedef struct _register16{
 
 int mainloop(void);
 
-
-/* Decode function
+/*
+*  Decode function
 *  Decodes the OP code and Calls the appropiate instruction
 */
 void decode(char* op_code, unsigned int address);
