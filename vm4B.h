@@ -1,14 +1,14 @@
 
 /*
-Nibble Knowlege
-------------------------------------------------------
-FileName: vm4B.h.c
-Description: Contains the definitions and constants used thoughout
-	     the VM
-Original Creator: Bailey Tye
-Last Editor:      Bailey Tye
-Date of Last Edit: 03/10/15
-Date of Creation:  01/10/15
+* Nibble Knowlege
+* ------------------------------------------------------
+* FileName: vm4B.h.c
+* Description: Contains the definitions and constants used thoughout
+*	       the VM
+* Original Creator: Bailey Tye
+* Last Editor:      Bailey Tye
+* Date of Last Edit: 03/10/15
+* Date of Creation:  01/10/15
 */
 
 
@@ -53,20 +53,27 @@ Date of Creation:  01/10/15
 // Structure of a nibble
 
 typedef struct _nibble{
-	unsigned int data : 4;
+	uint8_t data : 4;
 } nibble;
 
-// Structure of the registers
-typedef struct _register{
-	unsigned int reg_type;
-	uint16_t contents16;
-	unsigned int contents4: 4;
-} reg;
+// Global Variables
+
+extern uint16_t regPC;
+extern nibble   regA;
+extern uint16_t regMEM;
+extern nibble	regSTAT;
+
+extern nibble*	MAINMEM;
 
 //--------------------Prototypes----------------------//
 
 
 int mainloop(void);
+
+
+
+// inst.c Prototypes
+// -----------------------------------------------
 
 /*
 *  Decode function
@@ -74,4 +81,9 @@ int mainloop(void);
 */
 void decode(char* op_code, unsigned int address);
 
+// mem.c Prototypes
+// ----------------------------------------------
 
+void initMem(void);
+
+void writeMem(nibble data, uint16_t address);
