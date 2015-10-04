@@ -24,10 +24,11 @@ void initReg(void){
 	REGISTERS[A].regType = REGISTER4BIT;
 	REGISTERS[MEM].regType = REGISTER16BIT;
 	REGISTERS[STAT].regType = REGISTER4BIT;
-	
+
 	//Set data of registers to 0
 	for(int i = 0; i < NUMREG; i++){
 		REGISTERS[i].contents16 = 0;
 		REGISTERS[i].contents4 = 0;
-	} 
+	}
 
+}
