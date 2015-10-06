@@ -75,15 +75,52 @@ int mainloop(void);
 // inst.c Prototypes
 // -----------------------------------------------
 
-/*
-*  Decode function
-*  Decodes the OP code and Calls the appropiate instruction
-*/
+// Decodes the OP code and Calls the appropiate instruction
 void decode(char* op_code, unsigned int address);
+
+// Halt Instruction
+void hlt(void);
+
+// Load Instruction
+void lod(unsigned int addressFrom);
+
+// Store Instruction
+void str(unsigned int addressTo);
+
+// Add Instruction
+void add(unsigned int addAddress);
+
+// No Operation Instruction
+void nop(void);
+
+// NAND Instruction
+void nnd(unsigned int nndAdress);
+
+// Copies the XOR bit and the Carry into the
+// Acummulator and sets the other bits to 0
+void cxa(void);
+
+// Jump instruction
+void jmp(unsigned int jumpAddress);
 
 // mem.c Prototypes
 // ----------------------------------------------
 
+// Initilizes Memory of size MEMSIZE
 void initMem(void);
 
+// Prints all of Memory
+void printMem(void);
+
+// Writes a nibble of data to an address in Memory
 void writeMem(nibble data, uint16_t address);
+
+// Reads a nibble of data from an address in Memory
+nibble readMem(uint16_t address);
+
+// Releases the memory
+void freeMem(void);
+
+// reg.c Prototypes
+// ----------------------------------------------
+
