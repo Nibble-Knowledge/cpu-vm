@@ -1,4 +1,4 @@
-SRC=mainB.c instB.c 
+SRC=mainB.c instB.c memB.c util.c  
 EXE=vm4B
 EXTRACFLAGS=-lm
 EXTRALDFLAGS=-lm

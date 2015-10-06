@@ -24,7 +24,9 @@ int main(int argc, char** argv){
         int status;
 
         printf("%s starting up...\n", VERSTR);
-        printf("Command line arguments:");
+        printf("Command line arguments:\n");
+        printf("~q: Quit, ~pm lower upper: Prints mem between lower and upper\n");
+        printf("~pr: Prints register contents\n"); 
         for(i = 1; i < argc; i++)
         {
                 if(argv[i] != NULL)
@@ -32,6 +34,7 @@ int main(int argc, char** argv){
                         printf(" %s", argv[i]);
                 }
         }
+	initMem();
         puts("");
         status = mainloop();
         return status;
@@ -45,25 +48,62 @@ int main(int argc, char** argv){
 int mainloop(void){
 
 	char op_code[100];
-	unsigned int inst_addr;
+	uint16_t instAddr;
+	uint16_t topAddr;
 	char run = 1;
 	char in[100];
+	regA.data = 0;
+	regSTAT.data = 0;
+	setBoot();
 
-	while(1){
+	while(run){
 
 		printf("Input: ");
 		fgets(in, 99, stdin);
-		sscanf(in, "%s %u", op_code, &inst_addr);
+		sscanf(in, "%s %hu %hu", op_code, &instAddr, &topAddr);
 
 
-		printf("Retrieved: \n OPCode: %s \n Instruction Address: %u\n Decoding...\n", op_code, inst_addr);
-		decode(op_code, inst_addr);
+		//Process input
+		if(!strcmp(op_code, "~q")){
+			printf("Halting");
+			run = 0;
+		}
+		else if(!strcmp(op_code, "~pm")){
+			printMem(instAddr, topAddr);
+		}
+		else if(!strcmp(op_code, "~pr")){
+			printReg();
+		}
+		else {
+			decode(op_code, instAddr);
+		}
+
 
 	}
 
 	return 1;
 }
 
-
-
+/*
+* Used to display to the user if there was an error
+*/
+int shutdown(int err)
+{
+	puts("Shutting down...");
+	if(err == NOERROR)
+	{
+		puts("No errors");
+		freeMem();
+		return 0;
+	}
+	else if(err == MEMALLOCERROR)
+	{
+		puts("Error allocating main memory");
+	}
+	else
+	{
+		puts("Unknown error");
+	}
+	return -1;
+}
 

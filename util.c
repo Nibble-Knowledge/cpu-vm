@@ -1,4 +1,4 @@
-#include "vm4.h"
+#include "vm4B.h"
 
 /* From http://stackoverflow.com/questions/111928/is-there-a-printf-converter-to-print-in-binary-format */
 
@@ -47,6 +47,7 @@ uint8_t todata(char *str)
 	return (uint8_t) (strtol(str, NULL, 0) % 16);
 }
 
+/*
 unsigned int toreg(char *str)
 {
 	if(!strncmp(str, "a", INSTLEN - 1))
@@ -72,3 +73,4 @@ unsigned int toreg(char *str)
 	}
 	return 0;
 }
+*/
