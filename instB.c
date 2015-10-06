@@ -14,10 +14,16 @@
 
 #include "vm4B.h"
 
+uint16_t regPC = 0;
+nibble regA;
+uint16_t regMEM = 0;
+nibble regSTAT;
+
+
 
 // Decode fuction
 // Decodes the OP code and calls the appropiate fuction
-int decode( char* op_code, unsigned int address)
+int decode( char* op_code, uint16_t address)
 {
 
 	if(!strcmp(op_code, "HLT"))
@@ -57,38 +63,72 @@ int decode( char* op_code, unsigned int address)
 
 
 void hlt(void){
-	//Exit program, will figure out how to do that later
+	shutdown(NOERROR);
 }
 
-void lod(unsigned int addressFrom){
-	
+void lod(uint16_t addressFrom){
+	regA = MAINMEM[addressFrom];
+	setXOR();
 }
 
-void str(unsigned int addressTo){
-
+void str(uint16_t addressTo){
+	MAINMEM[addressTo] =  regA;
 }
 
-void add(unsigned int addAddress){
-
+void add(uint16_t addAddress){
+	uint8_t temp1 = regA.data;
+	uint8_t temp2 = MAINMEM[addAddress].data;
+	uint8_t result = temp1 + temp2;
+	if((result & 0x10) == 0x10)
+		regSTAT.data |= 0x8;
+	else
+		regSTAT.data &= 0x7;
+	regA.data = result & 0xF;
+	setXOR();
 }
 
 void nop(void){
 
 }
 
-void nnd(unsigned int nndAddress){
-
+void nnd(uint16_t nndAddress){
+	regA.data &= MAINMEM[nndAddress].data;
+	regA.data = ~regA.data;
+	setXOR();
 }
 
 void cxa(void){
+	regA.data = regSTAT.data;
+}
+
+void jmp(uint16_t jumpAddress){
+	if(regA.data == 0)
+		regPC = jumpAddress;
+}
+
+
+void printReg(void){
+
+	printf("A: %x\n", regA.data);
+	printf("PC: %x\n", regPC);
+	printf("MEM: %x\n", regMEM);
+	printf("STAT: %x\n", regSTAT.data);
 
 }
 
-void jmp(unsigned int jumpAddress){
+void setXOR(void){
 
+        nibble temp;
+        temp.data = regA.data ^ regSTAT.data;
+        temp.data &=  0x8;
+        if(temp.data == 0x8)
+      		regSTAT.data |= 0x2;
+        else
+        	regSTAT.data &= 0xD;
 }
 
 
+/*
 
 //TO BE REMOVED
 void add(void)
@@ -132,3 +172,4 @@ void li(uint8_t val)
 {
 	writereg(A, val);
 }
+*/

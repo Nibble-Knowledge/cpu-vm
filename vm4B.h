@@ -1,4 +1,3 @@
-
 /*
 * Nibble Knowlege
 * ------------------------------------------------------
@@ -19,6 +18,7 @@
 #include <string.h>
 #include <math.h>
 #include <limits.h>
+#include <inttypes.h>
 
 #define VERSTR "VM4 v0.1"
 #define IOMEM 3
@@ -29,6 +29,11 @@
 #define UNKOWNERROR -1
 #define MEMADDRSIZE 16
 #define MEMSIZE 65536
+#define BIGEND -1
+#define LITTLEEND 1
+#define MEMMODSIZE 4
+
+#define PLATEND LITTLEEND
 
 #define NUMREG 4
 #define PC 0
@@ -73,17 +78,61 @@ int mainloop(void);
 
 
 // inst.c Prototypes
-// -----------------------------------------------
+// ------------------------------------------------//
 
-/*
-*  Decode function
-*  Decodes the OP code and Calls the appropiate instruction
-*/
-void decode(char* op_code, unsigned int address);
+
+//Decodes the OP code and Calls the appropriate instruction
+int decode(char* op_code, uint16_t address);
+
+//Halt Instruction
+void hlt(void);
+
+//Load Instruction
+void lod(uint16_t);
+
+//Store Instruction
+void str(uint16_t);
+
+//Add Instruction
+void add(uint16_t);
+
+//No Operation Instruction
+void nop(void);
+
+//NAND Instruction
+void nnd(uint16_t);
+
+//Carry XOR into Accumulator 
+void cxa(void);
+
+//Jump Instruction
+void jmp(uint16_t);
+
+//Prints registers to screen
+void printReg(void);
+
+
+void setXOR(void);
 
 // mem.c Prototypes
-// ----------------------------------------------
+// ------------------------------------------------//
 
-void initMem(void);
+int initMem(void);
 
 void writeMem(nibble data, uint16_t address);
+
+void printMem(uint16_t, uint16_t);
+
+void freeMem(void);
+
+void setBoot(void);
+
+//main.c Prototypes
+// ------------------------------------------------//
+
+int shutdown(int);
+
+
+//util.c Prototypes
+//-------------------------------------------------//
+char *tobitstr(size_t,uint64_t,char);

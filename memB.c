@@ -10,9 +10,9 @@
 * Date of Last Edit: 03/10/15
 */
 
-#include "vm4.h"
+#include "vm4B.h"
 
-nibble *MAINMEM = NULL; 
+nibble *MAINMEM = NULL;
 
 // Initailize Memory Function
 int initMem(void)
@@ -28,29 +28,29 @@ int initMem(void)
 }
 
 // Print all of Memory
-void printMem(void)
+void printMem(uint16_t lower, uint16_t upper)
 {
-	uint16_t loc = 0;
 
-	if(MAINMEM == NULL || MEMSIZE == 0)
+
+	if(MAINMEM == NULL)
 	{
 		puts("No allocated memory");
 		return;
 	}
 
-	puts("Memory contents:");
-	for(loc = 0; loc < MEMSIZE; loc++)
+	puts("Memory contents: ");
+	for(int i = lower; i < upper ; i++)
 	{
-		printf("%s: %s", tobitstr(MEMADDRSIZE, loc, PLATEND), tobitstr(MEMMODSIZE, MAINMEM[loc].data, PLATEND));
-		if(loc == 0)
+		printf("%s: %s", tobitstr(MEMADDRSIZE, i, PLATEND), tobitstr(MEMMODSIZE, MAINMEM[i].data, PLATEND));
+		if(i == 0)
 		{
 			printf(" (zero)");
 		}
-		else if(loc < IOMEM + 1 && loc > 0 && IOMEM > 0) 
+		else if(i < IOMEM + 1 && i > 0 && IOMEM > 0) 
 		{
 			printf(" (I/O)");
 		}
-		else if(loc >= (IOMEM + 1) && loc < (1 + IOMEM + BOOTMEM) && BOOTMEM > 0)
+		else if(i >= (IOMEM + 1) && i < (1 + IOMEM + BOOTMEM) && BOOTMEM > 0)
 		{
 			printf(" (Boot ROM)");
 		}
@@ -81,7 +81,9 @@ nibble readMem(uint16_t address)
 	{
 		return MAINMEM[address];
 	}
-	return 0;
+	printf("WARNING Address accessed was negative");
+	nibble n;
+	return n;
 }
 
 // Frees used Memory
@@ -93,4 +95,12 @@ void freeMem(void)
 	}
 	free(MAINMEM);
 	return;
+}
+
+
+void setBoot(void){
+	for(int i = 0; i < 16; i++){
+		MAINMEM[i+IOMEM].data = i;
+	}
+
 }
