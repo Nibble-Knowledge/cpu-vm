@@ -24,7 +24,9 @@ int main(int argc, char** argv){
         int status;
 
         printf("%s starting up...\n", VERSTR);
-        printf("Command line arguments:");
+        printf("Command line arguments:\n");
+        printf("~q: Quit, ~pm lower upper: Prints mem between lower and upper\n");
+        printf("~pr: Prints register contents\n"); 
         for(i = 1; i < argc; i++)
         {
                 if(argv[i] != NULL)
