@@ -42,15 +42,12 @@ void printMem(uint16_t lower, uint16_t upper)
 	for(int i = lower; i < upper ; i++)
 	{
 		printf("%s: %s", tobitstr(MEMADDRSIZE, i, PLATEND), tobitstr(MEMMODSIZE, MAINMEM[i].data, PLATEND));
-		if(i == 0)
-		{
-			printf(" (zero)");
-		}
-		else if(i < IOMEM + 1 && i > 0 && IOMEM > 0) 
+
+		if(i < IOMEM && IOMEM > 0) 
 		{
 			printf(" (I/O)");
 		}
-		else if(i >= (IOMEM + 1) && i < (1 + IOMEM + BOOTMEM) && BOOTMEM > 0)
+		else if(i >= (IOMEM) && i < (IOMEM + BOOTMEM) && BOOTMEM > 0)
 		{
 			printf(" (Boot ROM)");
 		}

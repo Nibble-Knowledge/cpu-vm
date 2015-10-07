@@ -1,0 +1,18 @@
+<map id="mainloop" name="mainloop">
+<area shape="rect" id="node2" href="$instB_8c.html#a7cb6cb5aaee7533e21fad37a4a424308" title="decode" alt="" coords="134,208,198,235"/>
+<area shape="rect" id="node14" href="$memB_8c.html#abed51078d27768d97d46d303525d85db" title="printMem" alt="" coords="128,335,204,361"/>
+<area shape="rect" id="node16" href="$instB_8c.html#ab7dfcb1ea28aa624f46867185fb63b9c" title="printReg" alt="" coords="131,385,201,412"/>
+<area shape="rect" id="node17" href="$memB_8c.html#ab040b44ebc34f70e260c3d5f81a9b797" title="setBoot" alt="" coords="133,436,199,463"/>
+<area shape="rect" id="node3" href="$instB_8c.html#aa903e884ab6c9a6db96e5c1f28187fb6" title="add" alt="" coords="262,5,305,32"/>
+<area shape="rect" id="node5" href="$instB_8c.html#a3ea45cbb7cd64f33eb6419eced95018a" title="cxa" alt="" coords="262,157,305,184"/>
+<area shape="rect" id="node6" href="$instB_8c.html#ae9e1133acbb632e0d785c42e9fb740ba" title="hlt" alt="" coords="264,208,303,235"/>
+<area shape="rect" id="node9" href="$instB_8c.html#ac8b8e9cca53c00d5c258f8f999743a29" title="jmp" alt="" coords="262,259,305,285"/>
+<area shape="rect" id="node10" href="$instB_8c.html#a47d96d39ad1634c3a70e530cdd464b48" title="lod" alt="" coords="264,56,303,83"/>
+<area shape="rect" id="node11" href="$instB_8c.html#a8734990e6013de02d43fa29e46f7d02e" title="nnd" alt="" coords="262,107,305,133"/>
+<area shape="rect" id="node12" href="$instB_8c.html#a1875423eef6e42ca9288ab70f03ab418" title="nop" alt="" coords="262,309,305,336"/>
+<area shape="rect" id="node13" href="$instB_8c.html#a8f1d0469f8aa2ce1ac9a3bd9b914eea5" title="str" alt="" coords="383,385,421,412"/>
+<area shape="rect" id="node4" href="$instB_8c.html#ab1aa0b5b55b2e12e917b8879ed036534" title="setXOR" alt="" coords="367,56,437,83"/>
+<area shape="rect" id="node7" href="$mainB_8c.html#a38ba96c4cd736da2c49423aae253b73a" title="shutdown" alt="" coords="363,208,441,235"/>
+<area shape="rect" id="node8" href="$memB_8c.html#ac52e068f2aee5b6553d71a13ca631e22" title="freeMem" alt="" coords="489,208,563,235"/>
+<area shape="rect" id="node15" href="$util_8c.html#a3b1cb6ce0835744c919d092fd3ef7ddf" title="tobitstr" alt="" coords="252,411,315,437"/>
+</map>
