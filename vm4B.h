@@ -21,11 +21,13 @@
 #include <inttypes.h>
 
 #define VERSTR "VM4 v0.1"
+#define BOOTBIN "test.bin"
 #define IOMEM 3
 #define BOOTMEM 1024
 #define RESERVEMEM (1 + IOMEM + BOOTMEM)
 #define NOERROR 0
 #define MEMALLOCERROR 1
+#define UNKNOWNINSTRUCTIONERROR 2
 #define UNKOWNERROR -1
 #define MEMADDRSIZE 16
 #define MEMSIZE 65536
@@ -116,6 +118,9 @@ typedef struct _nibble{
 	//Initialize Memory
 	int initMem(void);
 
+
+	nibble readMem(uint16_t);
+	
 	//Stores data into memory
 	void writeMem(nibble data, uint16_t address);
 
@@ -134,7 +139,7 @@ typedef struct _nibble{
 	// ------------------------------------------------//
 
 	//Superloop
-	int mainloop(void);
+	int mainloop(int mode);
 
 	//Shuts down the virtual machine
 	int shutdown(int);
@@ -151,4 +156,4 @@ typedef struct _nibble{
 	//------------------------------------------------//
 
 	//Reads file into memory
-	int readBin(char*);
+	int readBin(const char*, uint16_t);

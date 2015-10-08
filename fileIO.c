@@ -14,34 +14,51 @@
 #include "vm4B.h"
 
 
-int readBin(char* fileName){
+int readBin(const char* fileName, uint16_t memLocation){
 
-	nibble buffer;
-	uint16_t  memLocation = 1025;
+	unsigned char buffer = 0;
+	nibble temp2;
+	nibble temp;
+	int counter = 0;
 
-	
 	FILE *binFilePtr;
 
+	printf("Reading Boot file...\n");
+
 	//Open the Bin File
-	binFilePtr = fopen( fileName, "rb");
+	binFilePtr = fopen(fileName, "rb");
 
 	if(!binFilePtr){
-		printf("Unable to open .bin file");
+		printf("Unable to open .bin file\n");
 		return 1;
 	}
 
-	while(!feof(stdin)){
+	while(1){
 
-	//Read a nibble at a time
-	fread( buffer.data, sizeof(buffer.data), 1, binFilePtr );
 
-	//Store in Mem
-	writeMem( buffer, memLocation );
 
-	memLocation += 1;
+		//Read a nibble at a time
+		fread(&buffer, sizeof(buffer), 1, binFilePtr);
 
+
+		temp.data = buffer;
+
+		//Check for end of File
+		if(feof(binFilePtr))
+			break;
+
+		//Store in Mem
+		temp2.data = (buffer >> 4);
+		writeMem( temp2, memLocation );
+		memLocation += 1;
+		writeMem(temp, memLocation);
+		memLocation++;
+		counter++; counter++;
 	}
 
-	return 0;
+	fclose(binFilePtr);
+
+	printf("Finished Boot\n");
+	return counter/5;
 
 }

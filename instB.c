@@ -68,7 +68,7 @@ void hlt(void){
 
 void lod(uint16_t addressFrom){
 	regA = MAINMEM[addressFrom];
-	setXOR();
+	//setXOR(); No longer doing this in load
 }
 
 void str(uint16_t addressTo){
@@ -79,12 +79,26 @@ void add(uint16_t addAddress){
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
 	uint8_t result = temp1 + temp2;
-	if((result & 0x10) == 0x10)
+	regA.data = result & 0xF;
+
+	//Set overflow bit
+	if((temp1 & 0x8) && (temp2 & 0x8) && !(result & 0x8)){
 		regSTAT.data |= 0x8;
+		regSTAT.data ^= (result & 0x8);
+		}
+	else if(!(temp1 & 0x8) && !(temp2 & 0x8) && (result & 0x8)){
+		regSTAT.data |= 0x8;
+		regSTAT.data ^= (result & 0x8);
+		}
 	else
 		regSTAT.data &= 0x7;
-	regA.data = result & 0xF;
-	setXOR();
+ 
+	//If there was a carry out
+	if(result & 0x10)
+		regSTAT.data |= 0x2;
+	else
+		regSTAT.data &= 0xD;
+
 }
 
 void nop(void){
@@ -94,7 +108,7 @@ void nop(void){
 void nnd(uint16_t nndAddress){
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
-	setXOR();
+	//setXOR();
 }
 
 void cxa(void){
@@ -128,48 +142,3 @@ void setXOR(void){
 }
 
 
-/*
-
-//TO BE REMOVED
-void add(void)
-{
-	uint8_t val;
-	uint16_t memaddr = 0;
-	val = readreg(A);
-	memaddr = readreg(M1);
-	memaddr += (readreg(M2) << 4);
-	memaddr += (readreg(M3) << 8);
-	memaddr += (readreg(M4) << 12);
-	val = (val + readmem(memaddr) % (2 << REGSIZE));
-	writereg(A, val);
-}
-
-void wm(void)
-{
-	uint8_t val;
-	uint16_t memaddr = 0;
-	
-	val = readreg(A);
-	memaddr = readreg(M1);
-	memaddr += (readreg(M2) << 4);
-	memaddr += (readreg(M3) << 8);
-	memaddr += (readreg(M4) << 12);
-	writemem(memaddr, val);
-}
-
-void mv(unsigned int from, unsigned int to)
-{
-	uint8_t val;
-
-	if(from < NUMREG && to < NUMREG)
-	{
-		val = readreg(to);
-		writereg(from, val);
-	}
-}
-
-void li(uint8_t val)
-{
-	writereg(A, val);
-}
-*/
