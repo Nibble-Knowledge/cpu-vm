@@ -59,7 +59,7 @@
 
 typedef struct _nibble{
 	uint8_t data : 4;
-	} nibble;
+} nibble;
 
 	// Global Variables
 

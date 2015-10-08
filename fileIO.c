@@ -19,6 +19,7 @@ int readBin(char* fileName){
 	nibble buffer;
 	uint16_t  memLocation = 1025;
 
+	
 	FILE *binFilePtr;
 
 	//Open the Bin File
@@ -35,7 +36,7 @@ int readBin(char* fileName){
 	fread( buffer.data, sizeof(buffer.data), 1, binFilePtr );
 
 	//Store in Mem
-	writeMem( buffer, memlocation );
+	writeMem( buffer, memLocation );
 
 	memLocation += 1;
 
