@@ -15,32 +15,45 @@
 
 
 int readBin(char* fileName){
-
-	nibble buffer;
+	
+	printf("test/n");
+	unsigned char buffer = 0;
+	nibble temp;
 	uint16_t  memLocation = 1025;
 
 	FILE *binFilePtr;
+
+	printf("Reading Boot file.../n");
 
 	//Open the Bin File
 	binFilePtr = fopen( fileName, "rb");
 
 	if(!binFilePtr){
-		printf("Unable to open .bin file");
+		printf("Unable to open .bin file/n");
 		return 1;
 	}
 
-	while(!feof(stdin)){
+	while(1){
 
-	//Read a nibble at a time
-	fread( buffer.data, sizeof(buffer.data), 1, binFilePtr );
+		//Read a nibble at a time
+		fread( buffer, sizeof(buffer), 1, binFilePtr );
 
-	//Store in Mem
-	writeMem( buffer, memlocation );
+		temp.data = buffer;
 
-	memLocation += 1;
+		//Check for end of File
+		if(feof(binFilePtr))
+			break;
+
+		//Store in Mem
+		writeMem( temp, memLocation );
+
+		memLocation += 1;
 
 	}
 
+	fclose(binFilePtr);
+	
+	printf("Finished Boot/n");
 	return 0;
 
 }

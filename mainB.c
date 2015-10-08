@@ -36,6 +36,7 @@ int main(int argc, char** argv){
         }
 	initMem();
         puts("");
+        readBin("test.bin");
         status = mainloop();
         return status;
 
@@ -65,7 +66,7 @@ int mainloop(void){
 
 		//Process input
 		if(!strcmp(op_code, "~q")){
-			printf("Halting");
+			printf("Halting\n");
 			run = 0;
 		}
 		else if(!strcmp(op_code, "~pm")){

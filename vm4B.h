@@ -21,6 +21,7 @@
 #include <inttypes.h>
 
 #define VERSTR "VM4 v0.1"
+#define BOOTBIN "test.bin"
 #define IOMEM 3
 #define BOOTMEM 1024
 #define RESERVEMEM (1 + IOMEM + BOOTMEM)
