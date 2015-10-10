@@ -41,14 +41,18 @@ int main(int argc, char** argv){
                         printf(" %s", argv[i]);
                 }
         }
+
 	initMem();
-        puts("");
+	puts("");
 
         char fileName[100];
         if(mode  == 1){
         	printf("Enter file name: ");
         	scanf("%s", fileName);
-		readBin(fileName, loadLocation);
+		if(readBin(fileName, loadLocation) = -1){
+			printf("Entering User Input Mode");
+			mode = 0;
+		}
 	}
 
         status = mainloop(mode);
@@ -140,7 +144,7 @@ int mainloop(int mode){
 
 			}
 		mode = 0;
-		puts("File finished");
+		puts("Program finished");
 		}
 
 	}
