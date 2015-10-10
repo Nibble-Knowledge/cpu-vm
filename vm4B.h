@@ -80,7 +80,7 @@ typedef struct _nibble{
 
 
 	//Decodes the OP code and Calls the appropriate instruction
-	int decode(char* op_code, uint16_t address);
+	int decode(const char* op_code, uint16_t address);
 
 	//Halt Instruction
 	void hlt(void);

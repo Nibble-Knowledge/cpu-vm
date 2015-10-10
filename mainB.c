@@ -14,7 +14,6 @@
 //Includes
 #include "vm4B.h"
 
-int j;
 
 
 /*
@@ -34,7 +33,7 @@ int main(int argc, char** argv){
         printf("~pr: Prints register contents\n");
 	printf("Enter user input mode (0), or file mode(1)?\n");
 	scanf( "%d", &mode);
- 
+
         for(int i = 1; i < argc; i++)
         {
                 if(argv[i] != NULL)
@@ -44,7 +43,14 @@ int main(int argc, char** argv){
         }
 	initMem();
         puts("");
-	j = readBin("test.bin", loadLocation);
+
+        char fileName[100];
+        if(mode  == 1){
+        	printf("Enter file name: ");
+        	scanf("%s", fileName);
+		readBin(fileName, loadLocation);
+	}
+
         status = mainloop(mode);
         return status;
 
@@ -66,13 +72,12 @@ int mainloop(int mode){
 	setBoot();
 	char counter = 0;
 	nibble currentInst;
-	int instLeft = j;
 	int tempAddress = 0;
 
 	while(run){
 
-
-		printf("Input: ");
+		if(mode == 0)
+			printf("Input: ");
 		fgets(in, 99, stdin);
 		sscanf(in, "%s %hu %hu", op_code, &instAddr, &topAddr);
 
@@ -94,52 +99,48 @@ int mainloop(int mode){
 		}
 
 		if(mode == 1){
-		while(instLeft){
-			//Start of file code
-			currentInst = readMem(regPC);
+			puts("Program started");
+			while(!(regSTAT.data & 0x1)){
+				//Start of file code
+				currentInst = readMem(regPC);
 
-			instAddr = 0;
-			tempAddress = 0;
-			tempAddress = readMem(++regPC).data;
-			instAddr |= (tempAddress << 12);
+				instAddr = 0;
+				tempAddress = 0;
+				tempAddress = readMem(++regPC).data;
+				instAddr |= (tempAddress << 12);
 
-                        tempAddress = readMem(++regPC).data;
-                        instAddr |= (tempAddress << 8);
+	                        tempAddress = readMem(++regPC).data;
+       		                instAddr |= (tempAddress << 8);
 
-                        tempAddress = readMem(++regPC).data;
+                        	tempAddress = readMem(++regPC).data;
 
-                        instAddr |= (tempAddress << 4);
-                      	tempAddress = readMem(++regPC).data;
-                        instAddr |= (tempAddress);
-			regPC++;
-		//	instAddr |= (readMem(++regPC).data << 8);
-		//	instAddr |= (readMem(++regPC).data << 4);
-		//	instAddr |= (readMem(++regPC).data);
+                        	instAddr |= (tempAddress << 4);
+                      		tempAddress = readMem(++regPC).data;
+	                        instAddr |= (tempAddress);
+				regPC++;
 
-                        if(currentInst.data == HLT)
-                                decode("HLT", instAddr);
-                        else if(currentInst.data == LOD)
-                                decode("LOD", instAddr);
-                        else if(currentInst.data == STR)
-                               	decode("STR", instAddr);
-                        else if(currentInst.data == ADD)
-                                decode("ADD", instAddr);
-                        else if(currentInst.data == NOP)
-                                decode("NOP", instAddr);
-                        else if(currentInst.data == NND)
-                                decode("NND", instAddr);
-                        else if(currentInst.data == CXA)
-                               	decode("CXA", instAddr);
-                        else if(currentInst.data == JMP)
-                                decode("JMP", instAddr);
-                        else
-                                shutdown(UNKNOWNINSTRUCTIONERROR);
+	                        if(currentInst.data == HLT)
+        	                        decode("HLT", instAddr);
+                	        else if(currentInst.data == LOD)
+                        	        decode("LOD", instAddr);
+	                        else if(currentInst.data == STR)
+        	                       	decode("STR", instAddr);
+                	        else if(currentInst.data == ADD)
+                        	        decode("ADD", instAddr);
+	                        else if(currentInst.data == NOP)
+        	                        decode("NOP", instAddr);
+                	        else if(currentInst.data == NND)
+                        	        decode("NND", instAddr);
+	                        else if(currentInst.data == CXA)
+        	                       	decode("CXA", instAddr);
+                	        else if(currentInst.data == JMP)
+                        	        decode("JMP", instAddr);
+	                        else
+        	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
-		//	printf("%hu\n", instAddr);
-
-			instLeft--;
-		}
+			}
 		mode = 0;
+		puts("File finished");
 		}
 
 	}
@@ -157,19 +158,22 @@ int shutdown(int err)
 	{
 		puts("No errors");
 		freeMem();
-		return 0;
+		exit(0);
 	}
 	else if(err == MEMALLOCERROR)
 	{
 		puts("Error allocating main memory");
+		exit(0);
 	}
 	else if(err == UNKNOWNINSTRUCTIONERROR)
 	{
 		puts("Unknown instruction");
+		exit(0);
 	}
 	else
 	{
 		puts("Unknown error");
+		exit(0);
 	}
 	return -1;
 }

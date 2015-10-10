@@ -23,7 +23,7 @@ nibble regSTAT;
 
 // Decode fuction
 // Decodes the OP code and calls the appropiate fuction
-int decode( char* op_code, uint16_t address)
+int decode(const char* op_code, uint16_t address)
 {
 
 	if(!strcmp(op_code, "HLT"))
@@ -63,19 +63,22 @@ int decode( char* op_code, uint16_t address)
 
 
 void hlt(void){
-	shutdown(NOERROR);
+	regSTAT.data |= 0x1;
 }
 
 void lod(uint16_t addressFrom){
+	regMEM = addressFrom;
 	regA = MAINMEM[addressFrom];
 	//setXOR(); No longer doing this in load
 }
 
 void str(uint16_t addressTo){
+	regMEM = addressTo;
 	MAINMEM[addressTo] =  regA;
 }
 
 void add(uint16_t addAddress){
+	regMEM = addAddress;
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
 	uint8_t result = temp1 + temp2;
@@ -92,7 +95,7 @@ void add(uint16_t addAddress){
 		}
 	else
 		regSTAT.data &= 0x7;
- 
+
 	//If there was a carry out
 	if(result & 0x10)
 		regSTAT.data |= 0x2;
@@ -106,6 +109,7 @@ void nop(void){
 }
 
 void nnd(uint16_t nndAddress){
+	regMEM = nndAddress;
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
 	//setXOR();
@@ -116,6 +120,7 @@ void cxa(void){
 }
 
 void jmp(uint16_t jumpAddress){
+	regMEM = jumpAddress;
 	if(regA.data == 0)
 		regPC = jumpAddress;
 }
