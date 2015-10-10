@@ -11,7 +11,7 @@
 */
 
 //Includes
-#include "vm4B.h"
+#include "vm4.h"
 
 
 int readBin(const char* fileName, uint16_t memLocation){

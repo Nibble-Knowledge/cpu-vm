@@ -1,5 +1,5 @@
-SRC=mainB.c instB.c memB.c util.c fileIO.c
-EXE=vm4B
+SRC=main.c inst.c mem.c util.c fileIO.c
+EXE=vm4
 EXTRACFLAGS=-lm
 EXTRALDFLAGS=-lm
 export SRC

@@ -1,7 +1,7 @@
 /*
 * Nibble Knowledge
 * ------------------------------------------------------
-* Filename: memB.c
+* Filename: mem.c
 * Description: Contains all the functions to intialize, read,
 *              and write to memory
 * Original Creator:  Colton Schmidt
@@ -10,7 +10,7 @@
 * Date of Last Edit: 03/10/15
 */
 
-#include "vm4B.h"
+#include "vm4.h"
 
 nibble *MAINMEM = NULL;
 

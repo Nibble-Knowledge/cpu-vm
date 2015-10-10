@@ -1,7 +1,7 @@
 /*
 * Nibble Knowlege
 * ------------------------------------------------------
-* FileName: instB.c
+* FileName: inst.c
 * Description: Contains the decode function definition and function
 *	       definitions for each instruction of the instruction
 *	       set
@@ -12,7 +12,7 @@
 */
 
 
-#include "vm4B.h"
+#include "vm4.h"
 
 uint16_t regPC = 0;
 nibble regA;

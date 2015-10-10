@@ -1,7 +1,7 @@
 /*
 * Nibble Knowlege
 * ------------------------------------------------------
-* FileName: mainB.c
+* FileName: main.c
 * Description: Contains the main function to initialize everything,
 *	       and the mainloop to run the VM
 * Original Creator:  Bailey Tye
@@ -12,7 +12,7 @@
 
 
 //Includes
-#include "vm4B.h"
+#include "vm4.h"
 
 
 
