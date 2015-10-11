@@ -1,7 +1,7 @@
 SRC=main.c inst.c mem.c util.c fileIO.c
 EXE=vm4
-EXTRACFLAGS=-lm
-EXTRALDFLAGS=-lm
+EXTRACFLAGS=-lm 
+EXTRALDFLAGS=-lm 
 export SRC
 export EXE
 export EXTRACFLAGS

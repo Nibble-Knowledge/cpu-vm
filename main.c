@@ -49,7 +49,7 @@ int main(int argc, char** argv){
         if(mode  == 1){
         	printf("Enter file name: ");
         	scanf("%s", fileName);
-		if(readBin(fileName, loadLocation) = -1){
+		if(readBin(fileName, loadLocation) == -1){
 			printf("Entering User Input Mode");
 			mode = 0;
 		}
@@ -77,6 +77,10 @@ int mainloop(int mode){
 	char counter = 0;
 	nibble currentInst;
 	int tempAddress = 0;
+
+	struct timespec gettime_now;
+	double firstTime;
+	double secondTime;
 
 	while(run){
 
@@ -106,6 +110,9 @@ int mainloop(int mode){
 			puts("Program started");
 			while(!(regSTAT.data & 0x1)){
 				//Start of file code
+
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+				firstTime = gettime_now.tv_nsec;
 				currentInst = readMem(regPC);
 
 				instAddr = 0;
@@ -141,7 +148,9 @@ int mainloop(int mode){
                         	        decode("JMP", instAddr);
 	                        else
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
-
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+				secondTime = gettime_now.tv_nsec - firstTime;
+				printf("Time taken for instruction: %f", secondTime);
 			}
 		mode = 0;
 		puts("Program finished");

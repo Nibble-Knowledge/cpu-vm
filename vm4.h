@@ -19,8 +19,10 @@
 #include <math.h>
 #include <limits.h>
 #include <inttypes.h>
+#include <time.h> 
 
-#define VERSTR "VM4 v0.1"
+
+#define VERSTR "VM4 v0.3"
 #define BOOTBIN "test.bin"
 #define IOMEM 3
 #define BOOTMEM 1024
