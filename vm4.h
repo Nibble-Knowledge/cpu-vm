@@ -111,8 +111,6 @@ typedef struct _nibble{
 	//Prints registers to screen
 	void printReg(void);
 
-	//Set the XOR bit in the stat register
-	void setXOR(void);
 
 	// mem.c Prototypes
 	// ------------------------------------------------//

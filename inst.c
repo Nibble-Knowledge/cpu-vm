@@ -69,7 +69,7 @@ void hlt(void){
 void lod(uint16_t addressFrom){
 	regMEM = addressFrom;
 	regA = MAINMEM[addressFrom];
-	//setXOR(); No longer doing this in load
+
 }
 
 void str(uint16_t addressTo){
@@ -112,7 +112,7 @@ void nnd(uint16_t nndAddress){
 	regMEM = nndAddress;
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
-	//setXOR();
+
 }
 
 void cxa(void){
@@ -128,22 +128,13 @@ void jmp(uint16_t jumpAddress){
 
 void printReg(void){
 
-	printf("A: %x\n", regA.data);
-	printf("PC: %x\n", regPC);
-	printf("MEM: %x\n", regMEM);
-	printf("STAT: %x\n", regSTAT.data);
+	printf("A: 0x%x = %d\n", regA.data, regA.data);
+	printf("PC: 0x%x = %d\n", regPC, regPC);
+	printf("MEM: 0x%x = %d\n", regMEM, regMEM);
+	printf("STAT: 0x%x = %d\n", regSTAT.data, regSTAT.data);
 
 }
 
-void setXOR(void){
 
-        nibble temp;
-        temp.data = regA.data ^ regSTAT.data;
-        temp.data &=  0x8;
-        if(temp.data == 0x8)
-      		regSTAT.data |= 0x2;
-        else
-        	regSTAT.data &= 0xD;
-}
 
 

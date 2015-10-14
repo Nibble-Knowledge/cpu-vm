@@ -77,11 +77,13 @@ int mainloop(int mode){
 	char counter = 0;
 	nibble currentInst;
 	int tempAddress = 0;
+	int instrRun = 0;
 
+/*
 	struct timespec gettime_now;
 	double firstTime;
 	double secondTime;
-
+*/
 	while(run){
 
 		if(mode == 0)
@@ -110,11 +112,13 @@ int mainloop(int mode){
 			puts("Program started");
 			while(!(regSTAT.data & 0x1)){
 				//Start of file code
-
+/*
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				currentInst = readMem(regPC);
-
+*/
+				instrRun++;
+				printReg();
 				instAddr = 0;
 				tempAddress = 0;
 				tempAddress = readMem(++regPC).data;
@@ -148,12 +152,15 @@ int mainloop(int mode){
                         	        decode("JMP", instAddr);
 	                        else
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
-				clock_gettime(CLOCK_REALTIME, &gettime_now);
+
+/*				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				secondTime = gettime_now.tv_nsec - firstTime;
 				printf("Time taken for instruction: %f", secondTime);
-			}
+*/			}
 		mode = 0;
 		puts("Program finished");
+		printf("Instructions run %d\n", instrRun);
+
 		}
 
 	}
