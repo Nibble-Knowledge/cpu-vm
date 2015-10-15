@@ -1,14 +1,13 @@
 SRC=main.c inst.c mem.c util.c fileIO.c
 EXE=vm4
-EXTRACFLAGS=-lm 
-EXTRALDFLAGS=-lm 
+EXTRACFLAGS=-lm -lrt
+EXTRALDFLAGS=-lm -lrt
 export SRC
 export EXE
 export EXTRACFLAGS
 export EXTRALDFLAGS
 
 all: debug
-
 
 fast: phony
 	$(MAKE) -f Makefile.fast.gcc

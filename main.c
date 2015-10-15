@@ -79,17 +79,32 @@ int mainloop(int mode){
 	int tempAddress = 0;
 	int instrRun = 0;
 
-/*
+
+/*	// USED FOR ASSEMBLY TIMING
+  	init_perfcounters (1, 0); 
+
+	unsigned int overhead = get_cyclecount();
+	overhead = get_cyclecount() - overhead;
+
+	unsigned int t = get_cyclecount();
+*/
+
 	struct timespec gettime_now;
 	double firstTime;
 	double secondTime;
-*/
+
 	while(run){
 
 		if(mode == 0)
 			printf("Input: ");
 		fgets(in, 99, stdin);
 		sscanf(in, "%s %hu %hu", op_code, &instAddr, &topAddr);
+
+		//USED FOR ASSEMBLY TIMING
+//		t = get_cyclecount() - t;
+
+//		printf ("function took exactly %d cycles (including function call) ", t - overhead);
+
 
 
 		//Process input
@@ -112,11 +127,15 @@ int mainloop(int mode){
 			puts("Program started");
 			while(!(regSTAT.data & 0x1)){
 				//Start of file code
-/*
+
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
+
+
 				currentInst = readMem(regPC);
-*/
+
+				 // measure the counting overhead:
+
 				instrRun++;
 				printReg();
 				instAddr = 0;
@@ -153,10 +172,11 @@ int mainloop(int mode){
 	                        else
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
-/*				clock_gettime(CLOCK_REALTIME, &gettime_now);
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				secondTime = gettime_now.tv_nsec - firstTime;
 				printf("Time taken for instruction: %f", secondTime);
-*/			}
+
+			}
 		mode = 0;
 		puts("Program finished");
 		printf("Instructions run %d\n", instrRun);

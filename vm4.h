@@ -1,7 +1,7 @@
 /*
 * Nibble Knowlege
 * ------------------------------------------------------
-* FileName: vm4B.h.c
+* FileName: vm4.h.c
 * Description: Contains the definitions and constants used thoughout
 *	       the VM
 * Original Creator: Bailey Tye
@@ -10,7 +10,8 @@
 * Date of Creation:  01/10/15
 */
 
-
+#ifndef _VM4_H_
+#define _VM4_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -18,9 +19,9 @@
 #include <string.h>
 #include <math.h>
 #include <limits.h>
+#include <unistd.h>
 #include <inttypes.h>
-#include <time.h> 
-
+#include <time.h>
 
 #define VERSTR "VM4 v0.3"
 #define BOOTBIN "test.bin"
@@ -120,7 +121,7 @@ typedef struct _nibble{
 
 
 	nibble readMem(uint16_t);
-	
+
 	//Stores data into memory
 	void writeMem(nibble data, uint16_t address);
 
@@ -157,3 +158,15 @@ typedef struct _nibble{
 
 	//Reads file into memory
 	int readBin(const char*, uint16_t);
+
+
+	//ASSEMBLY TIMING NOT BEING USED RIGHT NOW
+
+	//extern inline void init_perfcounters (int32_t do_reset, int32_t enable_divider);
+
+
+	//extern inline unsigned int get_cyclecount (void);
+
+
+
+#endif
