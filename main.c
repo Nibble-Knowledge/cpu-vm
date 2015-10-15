@@ -217,7 +217,7 @@ int mainloop(){
 
 				instrRun++;
 
-				clock_gettime(CLOCK_REALTIME &gettime_now);
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
 				printf("Time taken for instruction: %li\n", totalSecondTime);
 
