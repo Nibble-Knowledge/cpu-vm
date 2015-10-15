@@ -26,6 +26,7 @@ int main(int argc, char** argv){
 	uint16_t loadLocation = 1025;
 	regPC = loadLocation;
 	int mode;
+        char fileName[100];
 
         printf("%s starting up...\n", VERSTR);
         printf("Command line arguments:\n");
@@ -45,7 +46,6 @@ int main(int argc, char** argv){
 	initMem();
 	puts("");
 
-        char fileName[100];
         if(mode  == 1){
         	printf("Enter file name: ");
         	scanf("%s", fileName);

@@ -14,6 +14,7 @@
 #define _VM4_H_
 
 #define _POSIX_TIMERS
+#define __USE_POSIX199309
 
 #include <stdio.h>
 #include <stdint.h>
