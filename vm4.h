@@ -25,6 +25,8 @@
 #include <unistd.h>
 #include <inttypes.h>
 #include <time.h>
+#include <fcntl.h>
+#include <sys/mman.h>
 
 #define VERSTR "VM4 v0.3"
 #define BOOTBIN "test.bin"
@@ -58,7 +60,25 @@
 #define JMP 6
 #define CXA 7
 
+//Stuff for GPIOs
+#define BCM2708_PERI_BASE 0x3F000000
+#define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
+#define PAGE_SIZE (4*1024)
+#define BLOCK_SIZE (4*1024)
+#define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+#define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
+#define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
 
+#define GPIO_SET *(gpio+7)  // sets   bits which are 1 ignores bits which are 0
+#define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
+
+#define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
+
+#define GPIO_PULL *(gpio+37) // Pull up/pull down
+#define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
+
+
+//Main loop modes
 #define FILEMODE 1
 #define USERMODE 0
 
@@ -76,6 +96,12 @@ typedef struct _nibble{
 	extern nibble	regSTAT;
 
 	extern nibble*	MAINMEM;
+
+        extern int  mem_fd;
+        extern void *gpio_map;
+        // I/O access
+        extern volatile unsigned *gpio;
+
 
 	//--------------------Prototypes----------------------//
 
@@ -162,13 +188,10 @@ typedef struct _nibble{
 	int readBin(const char*, uint16_t);
 
 
-	//ASSEMBLY TIMING NOT BEING USED RIGHT NOW
+	//GPIO.c Prototypes
+	//-----------------------------------------------//
 
-	//extern inline void init_perfcounters (int32_t do_reset, int32_t enable_divider);
-
-
-	//extern inline unsigned int get_cyclecount (void);
-
+	void setup_io(void);
 
 
 #endif
