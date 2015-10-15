@@ -20,6 +20,7 @@ int initMem(void)
 	MAINMEM = (nibble*)calloc(MEMSIZE, sizeof(nibble));
 	if (MAINMEM != NULL)
 	{
+		setBoot();
 		printf("Memory Initialized\n");
 		return 1;
 	}

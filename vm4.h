@@ -59,9 +59,8 @@
 #define CXA 7
 
 
-#define REGISTER16BIT 0
-#define REGISTER4BIT 1
-
+#define FILEMODE 1
+#define USERMODE 0
 
 // Structure of a nibble
 
@@ -143,7 +142,7 @@ typedef struct _nibble{
 	// ------------------------------------------------//
 
 	//Superloop
-	int mainloop(int mode);
+	int mainloop(void);
 
 	//Shuts down the virtual machine
 	int shutdown(int);

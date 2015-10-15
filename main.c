@@ -6,8 +6,8 @@
 *	       and the mainloop to run the VM
 * Original Creator:  Bailey Tye
 * Date of Creation:  01/10/15
-* Last Editor:       Colton Schmidt
-* Date of Last Edit: 03/10/15
+* Last Editor:       Bailey Tye
+* Date of Last Edit: 15/10/15
 */
 
 
@@ -21,20 +21,21 @@
 */
 int main(int argc, char** argv){
 
-
+	//Local Variables
         int status;
-	uint16_t loadLocation = 1025;
-	regPC = loadLocation;
-	int mode;
-        char fileName[100];
 
+	//Initializations
+	initMem();
+
+
+	//Setup
         printf("%s starting up...\n", VERSTR);
         printf("Command line arguments:\n");
         printf("~q: Quit, ~pm lower upper: Prints mem between lower and upper\n");
-        printf("~pr: Prints register contents\n");
-	printf("Enter user input mode (0), or file mode(1)?\n");
-	scanf( "%d", &mode);
-	while(getchar()!= '\n');
+        printf("~pr: Prints register contents, ~rm: reset memmory to 0s\n");
+	printf("~in: Prompt for file input\n");
+	printf("~run <start location>: runs program starting at <Start location>\n");
+
 
         for(int i = 1; i < argc; i++)
         {
@@ -44,19 +45,7 @@ int main(int argc, char** argv){
                 }
         }
 
-	initMem();
-	puts("");
-
-        if(mode  == 1){
-        	printf("Enter file name: ");
-        	scanf("%s", fileName);
-		if(readBin(fileName, loadLocation) == -1){
-			printf("Entering User Input Mode");
-			mode = 0;
-		}
-	}
-
-        status = mainloop(mode);
+        status = mainloop();
         return status;
 
 }
@@ -65,47 +54,33 @@ int main(int argc, char** argv){
 /*
 * Main loop used to continuously ask for user input
 */
-int mainloop(int mode){
+int mainloop(){
 
+	//Local variables
+	int mode = 0;
 	char op_code[100];
 	uint16_t instAddr;
 	uint16_t topAddr;
+	uint16_t baseAddr;
+	char fileName[100];
 	char run = 1;
 	char in[100];
 	regA.data = 0;
 	regSTAT.data = 0;
-	setBoot();
-	char counter = 0;
 	nibble currentInst;
 	int tempAddress = 0;
 	int instrRun = 0;
-
-
-/*	// USED FOR ASSEMBLY TIMING
-  	init_perfcounters (1, 0); 
-
-	unsigned int overhead = get_cyclecount();
-	overhead = get_cyclecount() - overhead;
-
-	unsigned int t = get_cyclecount();
-*/
-
 	struct timespec gettime_now;
 	long firstTime;
 	long secondTime;
 
+
 	while(run){
 
-		if(mode == 0)
+		if(mode == USERMODE)
 			printf("Input: ");
 		fgets(in, 99, stdin);
 		sscanf(in, "%s %hu %hu", op_code, &instAddr, &topAddr);
-
-		//USED FOR ASSEMBLY TIMING
-//		t = get_cyclecount() - t;
-
-//		printf ("function took exactly %d cycles (including function call) ", t - overhead);
-
 
 
 		//Process input
@@ -119,13 +94,35 @@ int mainloop(int mode){
 		else if(!strcmp(op_code, "~pr")){
 			printReg();
 		}
+		else if(!strcmp(op_code, "~in")){
+			printf("Enter file name, followed by an address to load at: ");
+        	        scanf("%s %hu", fileName, &baseAddr);
+			puts("WARNING, make sure the base address is set correctly when assembling file");
+			while(getchar()!= '\n');
+			if(readBin(fileName, baseAddr) == -1){
+                        	printf("Entering User Input Mode");
+   				mode = USERMODE;
+			}
+		}
+		else if(!strcmp(op_code, "~run")){
+			regPC = instAddr;
+			instrRun = 0;
+			regSTAT.data &= 0xD;
+			mode = FILEMODE;
+		}
+		else if(!strcmp(op_code, "~rm")){
+			freeMem();
+			initMem();
+		}
 		else {
-			if(mode == 0)
+			if(mode == USERMODE)
 				decode(op_code, instAddr);
 		}
 
-		if(mode == 1){
-			puts("Program started");
+		if(mode == FILEMODE){
+			puts("Program started...");
+
+			//Runs while HLT is off
 			while(!(regSTAT.data & 0x2)){
 				//Start of file code
 
@@ -134,10 +131,7 @@ int mainloop(int mode){
 
 
 				currentInst = readMem(regPC);
-				printf("Current opcode: %d\n", currentInst.data);
-				 // measure the counting overhead:
 
-				instrRun++;
 				instAddr = 0;
 				tempAddress = 0;
 				tempAddress = readMem(++regPC).data;
@@ -172,13 +166,15 @@ int mainloop(int mode){
 	                        else
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
+				instrRun++;
+
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				secondTime = gettime_now.tv_nsec - firstTime;
 				printf("Time taken for instruction: %li\n", secondTime);
 				printReg();
 
 			}
-		mode = 0;
+		mode = USERMODE;
 		puts("Program finished");
 		printf("Instructions run %d\n", instrRun);
 
