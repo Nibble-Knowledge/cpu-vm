@@ -63,7 +63,7 @@ int decode(const char* op_code, uint16_t address)
 
 
 void hlt(void){
-	regSTAT.data |= 0x1;
+	regSTAT.data |= 0x2;
 }
 
 void lod(uint16_t addressFrom){
@@ -93,14 +93,19 @@ void add(uint16_t addAddress){
 		regSTAT.data |= 0x8;
 		regSTAT.data ^= (result & 0x8);
 		}
-	else
+	else{
 		regSTAT.data &= 0x7;
+		regSTAT.data ^= (result & 0x8);
+	}
 
 	//If there was a carry out
-	if(result & 0x10)
-		regSTAT.data |= 0x2;
-	else
-		regSTAT.data &= 0xD;
+	if(result & 0x10){
+		regSTAT.data |= 0x1;
+	}
+	else{
+		regSTAT.data &= 0xE;
+	}
+
 
 }
 
@@ -128,10 +133,10 @@ void jmp(uint16_t jumpAddress){
 
 void printReg(void){
 
-	printf("A: 0x%x = %d\n", regA.data, regA.data);
-	printf("PC: 0x%x = %d\n", regPC, regPC);
-	printf("MEM: 0x%x = %d\n", regMEM, regMEM);
-	printf("STAT: 0x%x = %d\n", regSTAT.data, regSTAT.data);
+	printf("A:\t 0x%x \t= %d\n", regA.data, regA.data);
+	printf("PC:\t 0x%x \t= %d\n", regPC, regPC);
+	printf("MEM:\t 0x%x \t= %d\n", regMEM, regMEM);
+	printf("STAT:\t 0x%x \t= %d\n", regSTAT.data, regSTAT.data);
 
 }
 

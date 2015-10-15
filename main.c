@@ -34,6 +34,7 @@ int main(int argc, char** argv){
         printf("~pr: Prints register contents\n");
 	printf("Enter user input mode (0), or file mode(1)?\n");
 	scanf( "%d", &mode);
+	while(getchar()!= '\n');
 
         for(int i = 1; i < argc; i++)
         {
@@ -90,8 +91,8 @@ int mainloop(int mode){
 */
 
 	struct timespec gettime_now;
-	double firstTime;
-	double secondTime;
+	long firstTime;
+	long secondTime;
 
 	while(run){
 
@@ -125,7 +126,7 @@ int mainloop(int mode){
 
 		if(mode == 1){
 			puts("Program started");
-			while(!(regSTAT.data & 0x1)){
+			while(!(regSTAT.data & 0x2)){
 				//Start of file code
 
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
@@ -133,11 +134,10 @@ int mainloop(int mode){
 
 
 				currentInst = readMem(regPC);
-
+				printf("Current opcode: %d\n", currentInst.data);
 				 // measure the counting overhead:
 
 				instrRun++;
-				printReg();
 				instAddr = 0;
 				tempAddress = 0;
 				tempAddress = readMem(++regPC).data;
@@ -174,7 +174,8 @@ int mainloop(int mode){
 
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				secondTime = gettime_now.tv_nsec - firstTime;
-				printf("Time taken for instruction: %f", secondTime);
+				printf("Time taken for instruction: %li\n", secondTime);
+				printReg();
 
 			}
 		mode = 0;
