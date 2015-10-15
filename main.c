@@ -75,6 +75,8 @@ int mainloop(){
 	int tempAddress = 0;
 	int instrRun = 0;
 	struct timespec gettime_now;
+	struct timespec newTime;
+	newTime.tv_nsec = 0;
 	long totalFirstTime;
 	long totalSecondTime;
 	long firstTime;
@@ -141,6 +143,8 @@ int mainloop(){
 			while(!(regSTAT.data & 0x2)){
 				//Start of file code
 				GPIO_CLR = 1<<GPI;
+				clock_settime(CLOCK_REALTIME, &newTime); 
+
 
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
