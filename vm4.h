@@ -13,6 +13,8 @@
 #ifndef _VM4_H_
 #define _VM4_H_
 
+#define _POSIX_TIMERS
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
