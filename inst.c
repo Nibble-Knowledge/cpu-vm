@@ -142,7 +142,7 @@ void printReg(void){
 
 
 
-void setIOMem(void){
+void setIOMem(int mode){
 
 	
 
@@ -152,8 +152,30 @@ void setIOMem(void){
 
 
 void initGPIOs(void){
-
-
-
-
+	INP_GPIO(CLKPIN);
+	OUT_GPIO(CLKPIN);
+	INP_GPIO(P0);
+	OUT_GPIO(P0);
+	INP_GPIO(P1);
+	OUT_GPIO(P1);	
+	INP_GPIO(P2);
+	OUT_GPIO(P2);
+	INP_GPIO(P3);
+	OUT_GPIO(P3);
+	INP_GPIO(P4);
+	OUT_GPIO(P4);
+	INP_GPIO(P5);
+	OUT_GPIO(P5);	
+	INP_GPIO(P6);
+	OUT_GPIO(P6);
+	INP_GPIO(P7);
+	OUT_GPIO(P7);
+	INP_GPIO(P8);
+	OUT_GPIO(P8);
+	INP_GPIO(P9);
+	OUT_GPIO(P9);
+	INP_GPIO(P10);
+	OUT_GPIO(P10);	
+	INP_GPIO(P11);
+	OUT_GPIO(P11);
 }
