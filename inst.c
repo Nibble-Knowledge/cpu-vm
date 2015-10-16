@@ -67,7 +67,8 @@ void hlt(void){
 }
 
 void lod(uint16_t addressFrom){
-	setIOMem(0);
+	if(addressFrom <= 2)
+		setIOMem(0);
 	regMEM = addressFrom;
 	regA = MAINMEM[addressFrom];
 }
@@ -75,11 +76,13 @@ void lod(uint16_t addressFrom){
 void str(uint16_t addressTo){
 	regMEM = addressTo;
 	MAINMEM[addressTo] =  regA;
-	setIOMem(1);
+	if(addressTo <= 2)
+		setIOMem(1);
 }
 
 void add(uint16_t addAddress){
-	setIOMem(0);
+	if(addAddress <= 2)
+		setIOMem(0);
 	regMEM = addAddress;
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
@@ -116,7 +119,8 @@ void nop(void){
 }
 
 void nnd(uint16_t nndAddress){
-	setIOMem(0);
+	if(nndAddress <= 2)
+		setIOMem(0);
 	regMEM = nndAddress;
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
@@ -128,7 +132,8 @@ void cxa(void){
 }
 
 void jmp(uint16_t jumpAddress){
-	setIOMem(0);
+	if(jumpAddress <= 2)
+		setIOMem(0);
 	regMEM = jumpAddress;
 	if(regA.data == 0)
 		regPC = jumpAddress;
