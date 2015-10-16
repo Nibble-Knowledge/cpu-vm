@@ -75,8 +75,7 @@ int mainloop(){
 	int tempAddress = 0;
 	int instrRun = 0;
 	struct timespec gettime_now;
-	struct timespec newTime;
-	newTime.tv_nsec = 0;
+	struct timespec newTime = {0, 0};
 	long totalFirstTime;
 	long totalSecondTime;
 	long firstTime;
@@ -143,13 +142,13 @@ int mainloop(){
 			while(!(regSTAT.data & 0x2)){
 				//Start of file code
 				GPIO_CLR = 1<<GPI;
-				clock_settime(CLOCK_MONOTONIC, &newTime); 
-
+				int test = clock_settime(CLOCK_MONOTONIC, &newTime); 
+				printf("Clock check: %d\n", test);
 
 				clock_gettime(CLOCK_MONOTONIC, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				totalFirstTime = firstTime;
-
+				printf("Current clock value: %li\n", firstTime);
 				currentInst = readMem(regPC);
 
 				instAddr = 0;
@@ -158,27 +157,78 @@ int mainloop(){
 				instAddr |= (tempAddress << 12);
 
                                 clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+
+				while(1){
+					if(firstTime > gettime_now.tv_nsec){
+						if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+							break;
+					}
+					else if(gettime_now.tv_nsec - firstTime >= period)
+						break;
+					clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+				}
+/*
+
 				while((gettime_now.tv_nsec - firstTime) < period)
 					clock_gettime(CLOCK_MONOTONIC, &gettime_now);
 				GPIO_SET = 1<<GPI;
+
+                                clock_settime(CLOCK_MONOTONIC, &newTime);
+*/
 				firstTime = gettime_now.tv_nsec;
 
 	                        tempAddress = readMem(++regPC).data;
        		                instAddr |= (tempAddress << 8);
 
                                 clock_gettime(CLOCK_MONOTONIC, &gettime_now);
-                                while((gettime_now.tv_nsec - firstTime) < period)
+
+// 		               while((gettime_now.tv_nsec - firstTime) < period)
+  //                                      clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                while(1){
+                                        if(firstTime > gettime_now.tv_nsec){
+                                                if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+                                                        break;
+                                        }
+                                        else if(gettime_now.tv_nsec - firstTime >= period)
+                                                break;
                                         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                }
+
+
+
+
 				GPIO_CLR = 1<<GPI;
+
+                                clock_settime(CLOCK_MONOTONIC, &newTime);
+
 				firstTime = gettime_now.tv_nsec;
 
                         	tempAddress = readMem(++regPC).data;
                         	instAddr |= (tempAddress << 4);
 
                                 clock_gettime(CLOCK_MONOTONIC, &gettime_now);
-                                while((gettime_now.tv_nsec - firstTime) < period)
+//                                while((gettime_now.tv_nsec - firstTime) < period)
+  //                                      clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+
+                                while(1){
+                                        if(firstTime > gettime_now.tv_nsec){
+                                                if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+                                                        break;
+                                        }
+                                        else if(gettime_now.tv_nsec - firstTime >= period)
+                                                break;
                                         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                }
+
+
+
+
+
+
 				GPIO_SET = 1 <<GPI;
+
+                                clock_settime(CLOCK_MONOTONIC, &newTime);
+
                                 firstTime = gettime_now.tv_nsec;
 
 
@@ -187,9 +237,29 @@ int mainloop(){
 				regPC++;
 
                                 clock_gettime(CLOCK_MONOTONIC, &gettime_now);
-                                while((gettime_now.tv_nsec - firstTime) < period)
+//                                while((gettime_now.tv_nsec - firstTime) < period)
+  //                                      clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+
+
+
+                                while(1){
+                                        if(firstTime > gettime_now.tv_nsec){
+                                                if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+                                                        break;
+                                        }
+                                        else if(gettime_now.tv_nsec - firstTime >= period)
+                                                break;
                                         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                }
+
+
+
+
+
                                 GPIO_CLR = 1<<GPI;
+
+                                clock_settime(CLOCK_MONOTONIC, &newTime);
+
 				firstTime = gettime_now.tv_nsec;
 
 
@@ -213,8 +283,22 @@ int mainloop(){
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
                                 clock_gettime(CLOCK_MONOTONIC, &gettime_now);
-                                while((gettime_now.tv_nsec - firstTime) < period)
+//                                while((gettime_now.tv_nsec - firstTime) < period)
+  //                                      clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+
+                                while(1){
+                                        if(firstTime > gettime_now.tv_nsec){
+                                                if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+                                                        break;
+                                        }
+                                        else if(gettime_now.tv_nsec - firstTime >= period)
+                                                break;
                                         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                }
+
+
+
+
                                 firstTime = gettime_now.tv_nsec;
 
 
@@ -269,3 +353,19 @@ int shutdown(int err)
 	return -1;
 }
 
+
+
+void waitForPeriod(long firstTime,timespec gettime_now,long period ){
+
+     while(1){
+         if(firstTime > gettime_now.tv_nsec){
+         	if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
+                 	break;
+         }
+         else if(gettime_now.tv_nsec - firstTime >= period)
+                 break;
+         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+     }
+
+
+}
