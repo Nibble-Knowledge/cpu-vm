@@ -146,7 +146,7 @@ int mainloop(){
 	 
 				printf("Clock check: %d\n", test);
 
-				clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				totalFirstTime = firstTime;
 				printf("Current clock value: %li\n", firstTime);
@@ -157,7 +157,7 @@ int mainloop(){
 				tempAddress = readMem(++regPC).data;
 				instAddr |= (tempAddress << 12);
 
-                                clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
 
 				void waitForPeriod(firstTime,gettime_now,period );
 
@@ -166,7 +166,7 @@ int mainloop(){
 	                        tempAddress = readMem(++regPC).data;
        		                instAddr |= (tempAddress << 8);
 
-                                clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
 				void waitForPeriod(firstTime,gettime_now,period );
 
 				GPIO_CLR = 1<<GPI;
@@ -176,7 +176,7 @@ int mainloop(){
                         	tempAddress = readMem(++regPC).data;
                         	instAddr |= (tempAddress << 4);
 
-                                clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
 				void waitForPeriod(firstTime,gettime_now,period );
 
 				GPIO_SET = 1 <<GPI;
@@ -188,7 +188,7 @@ int mainloop(){
 	                        instAddr |= (tempAddress);
 				regPC++;
 
-                                clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
 				void waitForPeriod(firstTime,gettime_now,period );
 
                                 GPIO_CLR = 1<<GPI;
@@ -215,14 +215,14 @@ int mainloop(){
 	                        else
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
-                                clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
 
 				void waitForPeriod(firstTime,gettime_now,period );
                                 firstTime = gettime_now.tv_nsec;
 
 				instrRun++;
 				
-				clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
 				printf("Time taken for instruction: %li\n", totalSecondTime);
 
@@ -280,7 +280,7 @@ void waitForPeriod(long firstTime,timespec gettime_now,long period ){
          }
          else if(gettime_now.tv_nsec - firstTime >= period)
                  break;
-         clock_gettime(CLOCK_MONOTONIC, &gettime_now);
+         clock_gettime(CLOCK_REALTIME, &gettime_now);
      }
 
 
