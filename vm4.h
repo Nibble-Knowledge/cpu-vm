@@ -92,7 +92,7 @@
 #define P9 16
 #define P10 20
 #define P11 21
-#define CLKPIN 17
+#define CLKPIN 5
 
 
 //Main loop modes
@@ -105,112 +105,119 @@ typedef struct _nibble{
 	uint8_t data : 4;
 } nibble;
 
-	// Global Variables
+// Global Variables
 
-	extern uint16_t regPC;
-	extern nibble   regA;
-	extern uint16_t regMEM;
-	extern nibble	regSTAT;
+extern uint16_t regPC;
+extern nibble   regA;
+extern uint16_t regMEM;
+extern nibble	regSTAT;
 
-	extern nibble*	MAINMEM;
+extern nibble*	MAINMEM;
 
-        extern int  mem_fd;
-        extern void *gpio_map;
-        // I/O access
-        extern volatile unsigned *gpio;
-
-
-	//--------------------Prototypes----------------------//
+extern int  mem_fd;
+extern void *gpio_map;
+// I/O access
+extern volatile unsigned *gpio;
 
 
-	// inst.c Prototypes
-	// ------------------------------------------------//
+//--------------------Prototypes----------------------//
 
 
-	//Decodes the OP code and Calls the appropriate instruction
-	int decode(const char* op_code, uint16_t address);
-
-	//Halt Instruction
-	void hlt(void);
-
-	//Load Instruction
-	void lod(uint16_t);
-
-	//Store Instruction
-	void str(uint16_t);
-
-	//Add Instruction
-	void add(uint16_t);
-
-	//No Operation Instruction
-	void nop(void);
-
-	//NAND Instruction
-	void nnd(uint16_t);
-
-	//Carry XOR into Accumulator
-	void cxa(void);
-
-	//Jump Instruction
-	void jmp(uint16_t);
-
-	//Prints registers to screen
-	void printReg(void);
+// inst.c Prototypes
+// ------------------------------------------------//
 
 
-	// mem.c Prototypes
-	// ------------------------------------------------//
+//Decodes the OP code and Calls the appropriate instruction
+int decode(const char* op_code, uint16_t address);
 
-	//Initialize Memory
-	int initMem(void);
+//Halt Instruction
+void hlt(void);
 
+//Load Instruction
+void lod(uint16_t);
 
-	nibble readMem(uint16_t);
+//Store Instruction
+void str(uint16_t);
 
-	//Stores data into memory
-	void writeMem(nibble data, uint16_t address);
+//Add Instruction
+void add(uint16_t);
 
-	//Prints all of Memory
-	void printMem(uint16_t, uint16_t);
+//No Operation Instruction
+void nop(void);
 
-	//Frees Memory allocation
-	void freeMem(void);
+//NAND Instruction
+void nnd(uint16_t);
 
-	//Sets data table values for 1 to 15
-	void setBoot(void);
+//Carry XOR into Accumulator
+void cxa(void);
+
+//Jump Instruction
+void jmp(uint16_t);
+
+//Prints registers to screen
+void printReg(void);
+
+//Sets the IO fields in MEM to the GPIOs
+void setIOMem(int mode);
+
+//Inits all GPIOs to outputs
+void initGPIOs(void);
 
 
 
-	//main.c Prototypes
-	// ------------------------------------------------//
+// mem.c Prototypes
+// ------------------------------------------------//
 
-	//Superloop
-	int mainloop(void);
-
-	//Shuts down the virtual machine
-	int shutdown(int);
+//Initialize Memory
+int initMem(void);
 
 
-	void waitForPeriod(long firstTime,struct timespec gettime_now,long period );
+nibble readMem(uint16_t);
 
-	//util.c Prototypes
-	//-------------------------------------------------//
+//Stores data into memory
+void writeMem(nibble data, uint16_t address);
+
+//Prints all of Memory
+void printMem(uint16_t, uint16_t);
+
+//Frees Memory allocation
+void freeMem(void);
+
+//Sets data table values for 1 to 15
+void setBoot(void);
 
 
-	char *tobitstr(size_t,uint64_t,char);
+
+//main.c Prototypes
+// ------------------------------------------------//
+
+//Superloop
+int mainloop(void);
+
+//Shuts down the virtual machine
+int shutdown(int);
 
 
-	//fileIO.c Prototypes
-	//------------------------------------------------//
+void waitForPeriod(long firstTime,struct timespec gettime_now,long period );
 
-	//Reads file into memory
-	int readBin(const char*, uint16_t);
+//util.c Prototypes
+//-------------------------------------------------//
 
 
-	//GPIO.c Prototypes
-	//-----------------------------------------------//
+char *tobitstr(size_t,uint64_t,char);
 
-	void setup_io(void);
+
+//fileIO.c Prototypes
+//------------------------------------------------//
+
+//Reads file into memory
+int readBin(const char*, uint16_t);
+
+
+//GPIO.c Prototypes
+//-----------------------------------------------//
+
+void setup_io(void);
 
 
 #endif
