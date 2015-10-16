@@ -67,17 +67,19 @@ void hlt(void){
 }
 
 void lod(uint16_t addressFrom){
+	setIOMem(0);
 	regMEM = addressFrom;
 	regA = MAINMEM[addressFrom];
-
 }
 
 void str(uint16_t addressTo){
 	regMEM = addressTo;
 	MAINMEM[addressTo] =  regA;
+	setIOMem(1);
 }
 
 void add(uint16_t addAddress){
+	setIOMem(0);
 	regMEM = addAddress;
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
@@ -114,6 +116,7 @@ void nop(void){
 }
 
 void nnd(uint16_t nndAddress){
+	setIOMem(0);
 	regMEM = nndAddress;
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
@@ -125,6 +128,7 @@ void cxa(void){
 }
 
 void jmp(uint16_t jumpAddress){
+	setIOMem(0);
 	regMEM = jumpAddress;
 	if(regA.data == 0)
 		regPC = jumpAddress;
@@ -226,7 +230,10 @@ void setIOMem(int mode){
 	}
 	//If instruction is reading from GPIOs
 	else {
-
+		INP_GPIO(P0);
+		INP_GPIO(P1);
+		INP_GPIO(P2);
+		INP_GPIO(P3);
 		INP_GPIO(P4);
 		INP_GPIO(P5);
 		INP_GPIO(P6);
@@ -235,6 +242,24 @@ void setIOMem(int mode){
 		INP_GPIO(P9);
 		INP_GPIO(P10);
 		INP_GPIO(P11);
+		
+		//Read Chip select
+		if(GET_GPIO(P0))
+			MAINMEM[0].data |= 0x8;
+		else
+			MAINMEM[0].data &= 0x7;
+		if(GET_GPIO(P1))
+			MAINMEM[0].data |= 0x4;
+		else
+			MAINMEM[0].data &= 0xB;
+		if(GET_GPIO(P2))
+			MAINMEM[0].data |= 0x2;
+		else
+			MAINMEM[0].data &= 0xD;
+		if(GET_GPIO(P3))
+			MAINMEM[0].data |= 0x1;
+		else
+			MAINMEM[0].data &= 0xE;
 		
 		//Read stat
 		if(GET_GPIO(P4))
@@ -256,21 +281,21 @@ void setIOMem(int mode){
 		
 		//Read Data
 		if(GET_GPIO(P8))
-			MAINMEM[1].data |= 0x8;
+			MAINMEM[2].data |= 0x8;
 		else
-			MAINMEM[1].data &= 0x7;
+			MAINMEM[2].data &= 0x7;
 		if(GET_GPIO(P9))
-			MAINMEM[1].data |= 0x4;
+			MAINMEM[2].data |= 0x4;
 		else
-			MAINMEM[1].data &= 0xB;
+			MAINMEM[2].data &= 0xB;
 		if(GET_GPIO(P10))
-			MAINMEM[1].data |= 0x2;
+			MAINMEM[2].data |= 0x2;
 		else
-			MAINMEM[1].data &= 0xD;
+			MAINMEM[2].data &= 0xD;
 		if(GET_GPIO(P11))
-			MAINMEM[1].data |= 0x1;
+			MAINMEM[2].data |= 0x1;
 		else
-			MAINMEM[1].data &= 0xE;
+			MAINMEM[2].data &= 0xE;
 		
 		
 	}
