@@ -21,6 +21,19 @@
 */
 int main(int argc, char** argv){
 
+
+	pid_t pid = getpid();
+	struct sched_param param;
+	param.sched_priority = 99;
+	printf("Process ID: %d\n", pid);
+	int scheduler = sched_getscheduler(pid);
+	printf("Schedule type: %d\n", scheduler);
+	if(sched_setscheduler(pid, SCHED_FIFO, &param) == 0){
+		puts("Error setting scheduler");
+	}
+	printf("Schedule type: %d\n", sched_getscheduler(pid));
+
+
 	//Local Variables
         int status;
 
@@ -146,7 +159,7 @@ int mainloop(){
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
-				totalFirstTime = firstTime;
+//				totalFirstTime = firstTime;
                                 waitForPeriod(firstTime,gettime_now,period );
 
                                 GPIO_CLR = 1<<CLKPIN;
@@ -221,12 +234,12 @@ int mainloop(){
 
 
 
-				instrRun++;
+//				instrRun++;
 
-				clock_gettime(CLOCK_REALTIME, &gettime_now);
-				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
-				printf("Time taken for instruction: %li\n", totalSecondTime);
-
+//				clock_gettime(CLOCK_REALTIME, &gettime_now);
+//				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
+//				printf("Time taken for instruction: %li\n", totalSecondTime);
+//
 
 			}
 		mode = USERMODE;

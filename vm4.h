@@ -27,6 +27,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <sched.h>
 
 #define VERSTR "VM4 v0.3"
 #define BOOTBIN "test.bin"
