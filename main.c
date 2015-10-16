@@ -29,11 +29,6 @@ int main(int argc, char** argv){
 	setup_io();
 	initGPIOs();
 
-	INP_GPIO(CLKPIN);
-	OUT_GPIO(CLKPIN);
-
-	GPIO_CLR = 1 << CLKPIN;
-
 	//Setup
         printf("%s starting up...\n", VERSTR);
         printf("Command line arguments:\n");
@@ -84,11 +79,6 @@ int mainloop(){
 	long firstTime;
 	long secondTime;
 	long period = 200000;
-
-
-
-        INP_GPIO(CLKPIN);
-        OUT_GPIO(CLKPIN);
 
 
 
