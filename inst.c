@@ -178,4 +178,19 @@ void initGPIOs(void){
 	OUT_GPIO(P10);	
 	INP_GPIO(P11);
 	OUT_GPIO(P11);
+	
+	//Turn them all off
+	GPIO_CLR = 1 << CLKPIN;
+	GPIO_CLR = 1 << P0;
+	GPIO_CLR = 1 << P1;
+	GPIO_CLR = 1 << P2;
+	GPIO_CLR = 1 << P3;
+	GPIO_CLR = 1 << P4;
+	GPIO_CLR = 1 << P5;
+	GPIO_CLR = 1 << P6;
+	GPIO_CLR = 1 << P7;
+	GPIO_CLR = 1 << P8;
+	GPIO_CLR = 1 << P9;
+	GPIO_CLR = 1 << P10;
+	GPIO_CLR = 1 << P11;
 }
