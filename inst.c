@@ -142,4 +142,18 @@ void printReg(void){
 
 
 
+void setIOMem(void){
 
+	
+
+
+
+}
+
+
+void initGPIOs(void){
+
+
+
+
+}

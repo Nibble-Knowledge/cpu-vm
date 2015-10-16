@@ -78,6 +78,23 @@
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
 
 
+#define P0 4
+#define P1 17
+#define P2 27
+#define P3 22
+
+#define P4 18
+#define P5 23
+#define P6 24
+#define P7 25
+
+#define P8 12
+#define P9 16
+#define P10 20
+#define P11 21
+#define CLKPIN 17
+
+
 //Main loop modes
 #define FILEMODE 1
 #define USERMODE 0
@@ -173,6 +190,8 @@ typedef struct _nibble{
 	//Shuts down the virtual machine
 	int shutdown(int);
 
+
+	void waitForPeriod(long firstTime,struct timespec gettime_now,long period );
 
 	//util.c Prototypes
 	//-------------------------------------------------//

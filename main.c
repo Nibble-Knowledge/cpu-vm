@@ -15,7 +15,6 @@
 #include "vm4.h"
 
 
-#define GPI 17
 
 /*
 * Main function initializes registers and memory, then starts the main loop
@@ -28,8 +27,12 @@ int main(int argc, char** argv){
 	//Initializations
 	initMem();
 	setup_io();
-	INP_GPIO(GPI);
-	OUT_GPIO(GPI);
+	initGPIOs();
+
+	INP_GPIO(CLKPIN);
+	OUT_GPIO(CLKPIN);
+
+	GPIO_CLR = 1 << CLKPIN;
 
 	//Setup
         printf("%s starting up...\n", VERSTR);
@@ -82,10 +85,13 @@ int mainloop(){
 	long secondTime;
 	long period = 200000;
 
-        INP_GPIO(GPI);
-        OUT_GPIO(GPI);
 
-	GPIO_CLR = 1<<GPI;
+
+        INP_GPIO(CLKPIN);
+        OUT_GPIO(CLKPIN);
+
+
+
 
 	while(run){
 
@@ -140,61 +146,64 @@ int mainloop(){
 
 			//Runs while HLT is off
 			while(!(regSTAT.data & 0x2)){
-				
-				//Start of file code
-				GPIO_CLR = 1<<GPI;
-	 
-				printf("Clock check: %d\n", test);
 
-				clock_gettime(CLOCK_REALTIME, &gettime_now);
-				firstTime = gettime_now.tv_nsec;
-				totalFirstTime = firstTime;
-				printf("Current clock value: %li\n", firstTime);
+				//Start of file code
+
+//				printf("Current clock value: %li\n", firstTime);
+
+				//EXECUTE FIRST 4 BITS
 				currentInst = readMem(regPC);
 
+                                clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				totalFirstTime = firstTime;
+                                waitForPeriod(firstTime,gettime_now,period );
+
+                                GPIO_CLR = 1<<CLKPIN;
+
+				//EXECUTE SECOND 4 BITS
 				instAddr = 0;
 				tempAddress = 0;
 				tempAddress = readMem(++regPC).data;
 				instAddr |= (tempAddress << 12);
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
-
-				void waitForPeriod(firstTime,gettime_now,period );
-
 				firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period );
+                                GPIO_SET = 1 <<CLKPIN;
 
+
+				//EXECUTE THIRD 4 BITS
 	                        tempAddress = readMem(++regPC).data;
        		                instAddr |= (tempAddress << 8);
 
+
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
-				void waitForPeriod(firstTime,gettime_now,period );
-
-				GPIO_CLR = 1<<GPI;
-
 				firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period );
+                                GPIO_CLR = 1<<CLKPIN;
 
+
+				//EXECUTE FOURTH 4 BITS
                         	tempAddress = readMem(++regPC).data;
                         	instAddr |= (tempAddress << 4);
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
-				void waitForPeriod(firstTime,gettime_now,period );
+				firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period );
 
-				GPIO_SET = 1 <<GPI;
+				GPIO_SET = 1 <<CLKPIN;
 
-                                firstTime = gettime_now.tv_nsec;
-
-
+				//EXECUTE FIFTH 4 BITS
                       		tempAddress = readMem(++regPC).data;
 	                        instAddr |= (tempAddress);
 				regPC++;
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
-				void waitForPeriod(firstTime,gettime_now,period );
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period );
 
-                                GPIO_CLR = 1<<GPI;
-
-				firstTime = gettime_now.tv_nsec;
-
+                                GPIO_CLR = 1<<CLKPIN;
 
 	                        if(currentInst.data == HLT)
         	                        decode("HLT", instAddr);
@@ -216,12 +225,14 @@ int mainloop(){
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
-
-				void waitForPeriod(firstTime,gettime_now,period );
                                 firstTime = gettime_now.tv_nsec;
+                                waitForPeriod(firstTime,gettime_now,period );
+                                GPIO_SET = 1 <<CLKPIN;
+
+
 
 				instrRun++;
-				
+
 				clock_gettime(CLOCK_REALTIME, &gettime_now);
 				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
 				printf("Time taken for instruction: %li\n", totalSecondTime);
@@ -231,7 +242,7 @@ int mainloop(){
 		mode = USERMODE;
 		puts("Program finished");
 		printf("Instructions run %d\n", instrRun);
-
+		GPIO_CLR = 1 << CLKPIN;
 		}
 
 	}
@@ -271,17 +282,19 @@ int shutdown(int err)
 
 
 
-void waitForPeriod(long firstTime,timespec gettime_now,long period ){
+void waitForPeriod(long firstTime,struct timespec gettime_now,long period ){
 
      while(1){
          if(firstTime > gettime_now.tv_nsec){
          	if(((1000000000 - firstTime) + (gettime_now.tv_nsec - 0))>= period)
-                 	break;
+                 	return;
          }
          else if(gettime_now.tv_nsec - firstTime >= period)
-                 break;
+                 return;
          clock_gettime(CLOCK_REALTIME, &gettime_now);
      }
+
+
 
 
 }
