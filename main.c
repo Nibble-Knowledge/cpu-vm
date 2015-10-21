@@ -21,7 +21,7 @@
 */
 int main(int argc, char** argv){
 
-
+/*
 	pid_t pid = getpid();
 	struct sched_param param;
 	param.sched_priority = 99;
@@ -32,6 +32,8 @@ int main(int argc, char** argv){
 		puts("Error setting scheduler");
 	}
 	printf("Schedule type: %d\n", sched_getscheduler(pid));
+*/
+
 
 
 	//Local Variables

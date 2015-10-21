@@ -152,7 +152,7 @@ void printReg(void){
 
 
 void setIOMem(int mode){
-	
+
 	//If the instruction is writing to GPIOs
 	if(mode == 1){
 		OUT_GPIO(P0);
@@ -161,120 +161,82 @@ void setIOMem(int mode){
 		OUT_GPIO(P3);
 		OUT_GPIO(P4);
 		OUT_GPIO(P5);
-		OUT_GPIO(P6);
-		OUT_GPIO(P7);
+
+
 		OUT_GPIO(P8);
 		OUT_GPIO(P9);
 		OUT_GPIO(P10);
 		OUT_GPIO(P11);
-		
+
 		//Chip select
 		if(MAINMEM[0].data & 0x8)
 			GPIO_SET = 1 << P0;
 		else
 			GPIO_CLR = 1 << P0;
 		if(MAINMEM[0].data & 0x4)
-		
+
 			GPIO_SET = 1 << P1;
 		else
 			GPIO_CLR = 1 << P1;
-			
+
 		if(MAINMEM[0].data & 0x2)
 			GPIO_SET = 1 << P2;
 		else
 			GPIO_CLR = 1 << P2;
-			
+
 		if(MAINMEM[0].data & 0x1)
 			GPIO_SET = 1 << P3;
 		else
 			GPIO_CLR = 1 << P3;
-		
-		//Stat	
+
+		//Stat
 		if(MAINMEM[1].data & 0x8)
 			GPIO_SET = 1 << P4;
 		else
 			GPIO_CLR = 1 << P4;
 		if(MAINMEM[1].data & 0x4)
-		
+
 			GPIO_SET = 1 << P5;
 		else
 			GPIO_CLR = 1 << P5;
-			
-		if(MAINMEM[1].data & 0x2)
-			GPIO_SET = 1 << P6;
-		else
-			GPIO_CLR = 1 << P6;
-			
-		if(MAINMEM[1].data & 0x1)
-			GPIO_SET = 1 << P7;
-		else
-			GPIO_CLR = 1 << P7;
-			
+
+
+
 		//Data
 		if(MAINMEM[2].data & 0x8)
 			GPIO_SET = 1 << P8;
 		else
 			GPIO_CLR = 1 << P8;
 		if(MAINMEM[2].data & 0x4)
-		
+
 			GPIO_SET = 1 << P9;
 		else
 			GPIO_CLR = 1 << P9;
-			
+
 		if(MAINMEM[2].data & 0x2)
 			GPIO_SET = 1 << P10;
 		else
 			GPIO_CLR = 1 << P10;
-			
+
 		if(MAINMEM[2].data & 0x1)
 			GPIO_SET = 1 << P11;
 		else
 			GPIO_CLR = 1 << P11;
-		
-		
+
+
 	}
 	//If instruction is reading from GPIOs
 	else {
-		INP_GPIO(P0);
-		INP_GPIO(P1);
-		INP_GPIO(P2);
-		INP_GPIO(P3);
-		INP_GPIO(P4);
-		INP_GPIO(P5);
+
 		INP_GPIO(P6);
 		INP_GPIO(P7);
 		INP_GPIO(P8);
 		INP_GPIO(P9);
 		INP_GPIO(P10);
 		INP_GPIO(P11);
-		
-		//Read Chip select
-		if(GET_GPIO(P0))
-			MAINMEM[0].data |= 0x8;
-		else
-			MAINMEM[0].data &= 0x7;
-		if(GET_GPIO(P1))
-			MAINMEM[0].data |= 0x4;
-		else
-			MAINMEM[0].data &= 0xB;
-		if(GET_GPIO(P2))
-			MAINMEM[0].data |= 0x2;
-		else
-			MAINMEM[0].data &= 0xD;
-		if(GET_GPIO(P3))
-			MAINMEM[0].data |= 0x1;
-		else
-			MAINMEM[0].data &= 0xE;
-		
+
+
 		//Read stat
-		if(GET_GPIO(P4))
-			MAINMEM[1].data |= 0x8;
-		else
-			MAINMEM[1].data &= 0x7;
-		if(GET_GPIO(P5))
-			MAINMEM[1].data |= 0x4;
-		else
-			MAINMEM[1].data &= 0xB;
 		if(GET_GPIO(P6))
 			MAINMEM[1].data |= 0x2;
 		else
@@ -283,7 +245,7 @@ void setIOMem(int mode){
 			MAINMEM[1].data |= 0x1;
 		else
 			MAINMEM[1].data &= 0xE;
-		
+
 		//Read Data
 		if(GET_GPIO(P8))
 			MAINMEM[2].data |= 0x8;
@@ -301,10 +263,10 @@ void setIOMem(int mode){
 			MAINMEM[2].data |= 0x1;
 		else
 			MAINMEM[2].data &= 0xE;
-		
-		
+
+
 	}
-	
+
 
 
 
@@ -317,7 +279,7 @@ void initGPIOs(void){
 	INP_GPIO(P0);
 	OUT_GPIO(P0);
 	INP_GPIO(P1);
-	OUT_GPIO(P1);	
+	OUT_GPIO(P1);
 	INP_GPIO(P2);
 	OUT_GPIO(P2);
 	INP_GPIO(P3);
@@ -325,7 +287,7 @@ void initGPIOs(void){
 	INP_GPIO(P4);
 	OUT_GPIO(P4);
 	INP_GPIO(P5);
-	OUT_GPIO(P5);	
+	OUT_GPIO(P5);
 	INP_GPIO(P6);
 	OUT_GPIO(P6);
 	INP_GPIO(P7);
@@ -335,10 +297,10 @@ void initGPIOs(void){
 	INP_GPIO(P9);
 	OUT_GPIO(P9);
 	INP_GPIO(P10);
-	OUT_GPIO(P10);	
+	OUT_GPIO(P10);
 	INP_GPIO(P11);
 	OUT_GPIO(P11);
-	
+
 	//Turn them all off
 	GPIO_CLR = 1 << CLKPIN;
 	GPIO_CLR = 1 << P0;
