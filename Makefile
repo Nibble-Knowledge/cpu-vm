@@ -1,28 +1,25 @@
-SRC=main.c inst.c mem.c util.c fileIO.c GPIO.c
 EXE=vm4
-EXTRACFLAGS=-lm -lrt
-EXTRALDFLAGS=-lm -lrt
-export SRC
-export EXE
-export EXTRACFLAGS
-export EXTRALDFLAGS
+SRCDIR=src
 
-all: debug
+all: fast
+
 
 fast: phony
-	$(MAKE) -f Makefile.fast.gcc
+	$(MAKE) -C $(SRCDIR) fast
+	cp $(SRCDIR)/$(EXE) .
 
-debug: phony docs
-	$(MAKE) -f Makefile.dev.gcc
+debug: phony
+	$(MAKE) -C $(SRCDIR)
+	cp $(SRCDIR)/$(EXE) .
 
-docs:
-	rm -f docs.html
-	doxygen
-	ln -s html/index.html docs.html
+distw32: phony
+	$(MAKE) -C $(SRCDIR) distw32
+	cp $(SRCDIR)/$(EXE) .
+	cp $(SRCDIR)/cygwin1.dll .
 
 clean:
-	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(SRC:.c=.o)
-	rm -rf html gmon.out docs.html $(EXE) *.dyn *.dpi *.lock *.stackdump *.db
+	$(MAKE) -C $(SRCDIR) clean
+	rm -rf $(EXE) gmon.out cygwin1.dll
 
 phony: 
 	true

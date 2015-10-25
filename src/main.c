@@ -41,9 +41,10 @@ int main(int argc, char** argv){
 
 	//Initializations
 	initMem();
+#ifdef RPI
 	setup_io();
 	initGPIOs();
-
+#endif
 	//Setup
         printf("%s starting up...\n", VERSTR);
         printf("Command line arguments:\n");
@@ -52,6 +53,7 @@ int main(int argc, char** argv){
 	printf("~cp: Changes the period of the clock to given number in nano seconds\n");
 	printf("~in: Prompt for file input\n");
 	printf("~run <start location>: runs program starting at <Start location>\n");
+	printf("~step <start location>: runs program starting at <Start location>. Steps through each execution. ~step without an address continues the current execution.\n");
 
 
         for(int i = 1; i < argc; i++)
@@ -94,6 +96,7 @@ int mainloop(){
 	long firstTime;
 	long secondTime;
 	long period = 200000;
+	char step = 0;
 
 
 
@@ -131,6 +134,17 @@ int mainloop(){
 			instrRun = 0;
 			regSTAT.data &= 0xD;
 			mode = FILEMODE;
+			step = 0;
+		}
+		else if(!strcmp(op_code, "~step")){
+			if(instAddr != NULL)
+			{
+				regPC = instAddr;
+				regSTAT.data &= 0xD;
+			}
+			instrRun = 0;
+			mode = FILEMODE;
+			step = 1;
 		}
 		else if(!strcmp(op_code, "~cp")){
                         printf("Enter period: ");
@@ -147,7 +161,14 @@ int mainloop(){
 		}
 
 		if(mode == FILEMODE){
-			puts("Program started...");
+			if(step == 0)
+			{
+				puts("Program started...");
+			}
+			else if (step == 1)
+			{
+				puts("Stepping forward...");
+			}
 
 			//Runs while HLT is off
 			while(!(regSTAT.data & 0x2)){
@@ -163,8 +184,9 @@ int mainloop(){
                                 firstTime = gettime_now.tv_nsec;
 //				totalFirstTime = firstTime;
                                 waitForPeriod(firstTime,gettime_now,period );
-
+								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
+								#endif
 
 				//EXECUTE SECOND 4 BITS
 				instAddr = 0;
@@ -175,8 +197,9 @@ int mainloop(){
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				waitForPeriod(firstTime,gettime_now,period );
+								#ifdef RPI
                                 GPIO_SET = 1 <<CLKPIN;
-
+								#endif
 
 				//EXECUTE THIRD 4 BITS
 	                        tempAddress = readMem(++regPC).data;
@@ -186,8 +209,9 @@ int mainloop(){
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				waitForPeriod(firstTime,gettime_now,period );
+								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
-
+								#endif
 
 				//EXECUTE FOURTH 4 BITS
                         	tempAddress = readMem(++regPC).data;
@@ -196,9 +220,9 @@ int mainloop(){
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
 				waitForPeriod(firstTime,gettime_now,period );
-
+				#ifdef RPI
 				GPIO_SET = 1 <<CLKPIN;
-
+				#endif
 				//EXECUTE FIFTH 4 BITS
                       		tempAddress = readMem(++regPC).data;
 	                        instAddr |= (tempAddress);
@@ -207,9 +231,9 @@ int mainloop(){
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
 				waitForPeriod(firstTime,gettime_now,period );
-
+								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
-
+								#endif
 	                        if(currentInst.data == HLT)
         	                        decode("HLT", instAddr);
                 	        else if(currentInst.data == LOD)
@@ -232,10 +256,14 @@ int mainloop(){
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
                                 waitForPeriod(firstTime,gettime_now,period );
+								#ifdef RPI
                                 GPIO_SET = 1 <<CLKPIN;
+								#endif
 
-
-
+				if(step == 1)
+				{
+					break;
+				}
 //				instrRun++;
 
 //				clock_gettime(CLOCK_REALTIME, &gettime_now);
@@ -244,10 +272,19 @@ int mainloop(){
 //
 
 			}
+		if((regSTAT.data & 0x2) && step)
+		{
+			puts("Computer halted");
+		}
 		mode = USERMODE;
-		puts("Program finished");
-		printf("Instructions run %d\n", instrRun);
-		GPIO_CLR = 1 << CLKPIN;
+		if(step == 0)
+		{
+			puts("Program finished");
+			printf("Instructions run %d\n", instrRun);
+			#ifdef RPI
+			GPIO_CLR = 1 << CLKPIN;
+			#endif
+		}
 		}
 
 	}

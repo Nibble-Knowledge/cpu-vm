@@ -16,6 +16,12 @@
 #define _POSIX_TIMERS
 #define __USE_POSIX199309
 
+#if __STDC_VERSION__ >= 199901L
+#define _XOPEN_SOURCE 600
+#else
+#define _XOPEN_SOURCE 500
+#endif /* __STDC_VERSION__ */
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -26,7 +32,9 @@
 #include <inttypes.h>
 #include <time.h>
 #include <fcntl.h>
+#ifdef RPI
 #include <sys/mman.h>
+#endif
 #include <sched.h>
 
 #define VERSTR "VM4 v0.3"
@@ -62,6 +70,7 @@
 #define CXA 7
 
 //Stuff for GPIOs
+#ifdef RPI
 #define BCM2708_PERI_BASE 0x3F000000
 #define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
 #define PAGE_SIZE (4*1024)
@@ -94,7 +103,7 @@
 #define P10 20
 #define P11 21
 #define CLKPIN 5
-
+#endif
 
 //Main loop modes
 #define FILEMODE 1
@@ -116,10 +125,11 @@ extern nibble	regSTAT;
 extern nibble*	MAINMEM;
 
 extern int  mem_fd;
+#ifdef RPI
 extern void *gpio_map;
 // I/O access
 extern volatile unsigned *gpio;
-
+#endif
 
 //--------------------Prototypes----------------------//
 
@@ -158,12 +168,13 @@ void jmp(uint16_t);
 //Prints registers to screen
 void printReg(void);
 
+#ifdef RPI
 //Sets the IO fields in MEM to the GPIOs
 void setIOMem(int mode);
 
 //Inits all GPIOs to outputs
 void initGPIOs(void);
-
+#endif
 
 
 // mem.c Prototypes
@@ -217,8 +228,8 @@ int readBin(const char*, uint16_t);
 
 //GPIO.c Prototypes
 //-----------------------------------------------//
-
+#ifdef RPI
 void setup_io(void);
-
+#endif
 
 #endif

@@ -67,8 +67,10 @@ void hlt(void){
 }
 
 void lod(uint16_t addressFrom){
+	#ifdef RPI
 	if(addressFrom <= 2)
 		setIOMem(0);
+	#endif
 	regMEM = addressFrom;
 	regA = MAINMEM[addressFrom];
 }
@@ -76,13 +78,17 @@ void lod(uint16_t addressFrom){
 void str(uint16_t addressTo){
 	regMEM = addressTo;
 	MAINMEM[addressTo] =  regA;
+	#ifdef RPI
 	if(addressTo <= 2)
 		setIOMem(1);
+	#endif
 }
 
 void add(uint16_t addAddress){
+	#ifdef RPI
 	if(addAddress <= 2)
 		setIOMem(0);
+	#endif
 	regMEM = addAddress;
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
@@ -119,8 +125,10 @@ void nop(void){
 }
 
 void nnd(uint16_t nndAddress){
+	#ifdef RPI
 	if(nndAddress <= 2)
 		setIOMem(0);
+	#endif
 	regMEM = nndAddress;
 	regA.data &= MAINMEM[nndAddress].data;
 	regA.data = ~regA.data;
@@ -132,8 +140,10 @@ void cxa(void){
 }
 
 void jmp(uint16_t jumpAddress){
+	#ifdef RPI
 	if(jumpAddress <= 2)
 		setIOMem(0);
+	#endif
 	regMEM = jumpAddress;
 	if(regA.data == 0)
 		regPC = jumpAddress;
@@ -150,7 +160,7 @@ void printReg(void){
 }
 
 
-
+#ifdef RPI
 void setIOMem(int mode){
 
 	//If the instruction is writing to GPIOs
@@ -222,7 +232,6 @@ void setIOMem(int mode){
 			GPIO_SET = 1 << P11;
 		else
 			GPIO_CLR = 1 << P11;
-
 
 	}
 	//If instruction is reading from GPIOs
@@ -316,3 +325,4 @@ void initGPIOs(void){
 	GPIO_CLR = 1 << P10;
 	GPIO_CLR = 1 << P11;
 }
+#endif

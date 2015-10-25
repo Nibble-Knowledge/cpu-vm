@@ -1,0 +1,14 @@
+CC=i686-pc-cygwin-gcc
+DISTFLAGS=-m32 -std=gnu99 -Os -s -static -march=native -fomit-frame-pointer -pipe -Wdisabled-optimization
+CFLAGS=$(DISTFLAGS) $(EXTRACFLAGS) -c
+LDFLAGS=$(DISTFLAGS) $(EXTRALDFLAGS)
+OBJ=$(SRC:.c=.o)
+
+all: $(SRC) $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) $(OBJ) -o $@ $(LDFLAGS)
+	cp ../bin-lib/cygwin1.dll cygwin1.dll
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@

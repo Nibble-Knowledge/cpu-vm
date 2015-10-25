@@ -1,6 +1,6 @@
 #include "vm4.h"
 
-
+#ifdef RPI
 int  mem_fd;
 void *gpio_map;
 // I/O access
@@ -36,7 +36,4 @@ void setup_io()
 
 }
 
-
-
-
-
+#endif
