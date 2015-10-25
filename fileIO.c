@@ -23,7 +23,7 @@ int readBin(const char* fileName, uint16_t memLocation){
 
 	FILE *binFilePtr;
 
-	printf("Reading Boot file...\n");
+	printf("Reading file...\n");
 
 	//Open the Bin File
 	binFilePtr = fopen(fileName, "rb");
@@ -58,7 +58,7 @@ int readBin(const char* fileName, uint16_t memLocation){
 
 	fclose(binFilePtr);
 
-	printf("Finished Boot\n");
+	printf("Finished reading file\n");
 	return counter/5;
 
 }

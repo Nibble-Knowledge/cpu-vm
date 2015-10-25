@@ -1,4 +1,4 @@
-SRC=main.c inst.c mem.c util.c fileIO.c
+SRC=main.c inst.c mem.c util.c fileIO.c GPIO.c
 EXE=vm4
 EXTRACFLAGS=-lm -lrt
 EXTRALDFLAGS=-lm -lrt
