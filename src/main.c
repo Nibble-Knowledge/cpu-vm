@@ -21,20 +21,6 @@
 */
 int main(int argc, char** argv){
 
-/*
-	pid_t pid = getpid();
-	struct sched_param param;
-	param.sched_priority = 99;
-	printf("Process ID: %d\n", pid);
-	int scheduler = sched_getscheduler(pid);
-	printf("Schedule type: %d\n", scheduler);
-	if(sched_setscheduler(pid, SCHED_FIFO, &param) == 0){
-		puts("Error setting scheduler");
-	}
-	printf("Schedule type: %d\n", sched_getscheduler(pid));
-*/
-
-
 
 	//Local Variables
         int status;
@@ -175,19 +161,23 @@ int mainloop(){
 
 				//Start of file code
 
-//				printf("Current clock value: %li\n", firstTime);
-
 				//EXECUTE FIRST 4 BITS
 				currentInst = readMem(regPC);
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
-//				totalFirstTime = firstTime;
-                                waitForPeriod(firstTime,gettime_now,period );
+                                waitForPeriod(firstTime,gettime_now,period/2 );
 								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
 								#endif
-
+				
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
+								#endif
+				
 				//EXECUTE SECOND 4 BITS
 				instAddr = 0;
 				tempAddress = 0;
@@ -196,9 +186,16 @@ int mainloop(){
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
-				waitForPeriod(firstTime,gettime_now,period );
+				waitForPeriod(firstTime,gettime_now,period/2);
 								#ifdef RPI
-                                GPIO_SET = 1 <<CLKPIN;
+                                GPIO_CLR = 1 <<CLKPIN;
+								#endif
+								
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
 								#endif
 
 				//EXECUTE THIRD 4 BITS
@@ -208,21 +205,35 @@ int mainloop(){
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
-				waitForPeriod(firstTime,gettime_now,period );
+				waitForPeriod(firstTime,gettime_now,period/2 );
 								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
 								#endif
-
+								
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
+								#endif
 				//EXECUTE FOURTH 4 BITS
                         	tempAddress = readMem(++regPC).data;
                         	instAddr |= (tempAddress << 4);
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
 				firstTime = gettime_now.tv_nsec;
-				waitForPeriod(firstTime,gettime_now,period );
+				waitForPeriod(firstTime,gettime_now,period/2 );
 				#ifdef RPI
-				GPIO_SET = 1 <<CLKPIN;
+				GPIO_CLR = 1 <<CLKPIN;
 				#endif
+
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
+								#endif
+								
 				//EXECUTE FIFTH 4 BITS
                       		tempAddress = readMem(++regPC).data;
 	                        instAddr |= (tempAddress);
@@ -230,10 +241,18 @@ int mainloop(){
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
-				waitForPeriod(firstTime,gettime_now,period );
+				waitForPeriod(firstTime,gettime_now,period/2 );
 								#ifdef RPI
                                 GPIO_CLR = 1<<CLKPIN;
 								#endif
+								
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
+								#endif	
+								
 	                        if(currentInst.data == HLT)
         	                        decode("HLT", instAddr);
                 	        else if(currentInst.data == LOD)
@@ -255,21 +274,22 @@ int mainloop(){
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
-                                waitForPeriod(firstTime,gettime_now,period );
+                                waitForPeriod(firstTime,gettime_now,period/2 );
 								#ifdef RPI
-                                GPIO_SET = 1 <<CLKPIN;
+                                GPIO_CLR = 1 <<CLKPIN;
+								#endif
+								
+				clock_gettime(CLOCK_REALTIME, &gettime_now);
+                                firstTime = gettime_now.tv_nsec;
+				waitForPeriod(firstTime,gettime_now,period/2 );
+								#ifdef RPI
+                                GPIO_SET = 1<<CLKPIN;
 								#endif
 
 				if(step == 1)
 				{
 					break;
 				}
-//				instrRun++;
-
-//				clock_gettime(CLOCK_REALTIME, &gettime_now);
-//				totalSecondTime = gettime_now.tv_nsec - totalFirstTime;
-//				printf("Time taken for instruction: %li\n", totalSecondTime);
-//
 
 			}
 		if((regSTAT.data & 0x2) && step)
