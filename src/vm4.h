@@ -69,6 +69,11 @@
 #define JMP 6
 #define CXA 7
 
+#ifdef __MINGW32__
+#define CLOCK_REALTIME 1
+typedef long long LARGE_INTEGER;
+#endif
+
 //Stuff for GPIOs
 #ifdef RPI
 #define BCM2708_PERI_BASE 0x3F000000
@@ -114,6 +119,14 @@
 typedef struct _nibble{
 	uint8_t data : 4;
 } nibble;
+
+#ifdef __MINGW32__
+struct timespec 
+{
+	time_t tv_sec;
+	long tv_nsec;
+};
+#endif
 
 // Global Variables
 
@@ -207,8 +220,12 @@ void setBoot(void);
 int mainloop(void);
 
 //Shuts down the virtual machine
+#ifndef __MINGW32__
 int shutdown(int);
-
+#endif
+#ifdef __MINGW32__
+int shutdown_vm4(int);
+#endif
 
 void waitForPeriod(long firstTime,struct timespec gettime_now,long period );
 
@@ -230,6 +247,11 @@ int readBin(const char*, uint16_t);
 //-----------------------------------------------//
 #ifdef RPI
 void setup_io(void);
+#endif
+
+#ifdef __MINGW32__
+LARGE_INTEGER getFILETIMEoffset();
+int clock_gettime(int X, struct timespec *tv);
 #endif
 
 #endif

@@ -270,7 +270,12 @@ int mainloop(){
                 	        else if(currentInst.data == JMP)
                         	        decode("JMP", instAddr);
 	                        else
+									#ifndef __MINGW32__
         	                        shutdown(UNKNOWNINSTRUCTIONERROR);
+									#endif
+									#ifdef __MINGW32__
+									shutdown_vm4(UNKNOWNINSTRUCTIONERROR);
+									#endif
 
                                 clock_gettime(CLOCK_REALTIME, &gettime_now);
                                 firstTime = gettime_now.tv_nsec;
@@ -315,7 +320,12 @@ int mainloop(){
 /*
 * Used to display to the user if there was an error
 */
+#ifndef __MINGW32__
 int shutdown(int err)
+#endif
+#ifdef __MINGW32__
+int shutdown_vm4(int err)
+#endif
 {
 	puts("Shutting down...");
 	if(err == NOERROR)
