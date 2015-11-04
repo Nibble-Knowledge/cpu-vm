@@ -1,8 +1,8 @@
 SRC=main.c inst.c mem.c util.c fileIO.c GPIO.c
 EXE=vm4
-EXTRACFLAGS=
+EXTRACFLAGS= -lm
 EXTRACFLAGS+=$(shell ./ispi.sh)
-EXTRALDFLAGS=
+EXTRALDFLAGS= -lm
 export SRC
 export EXE
 export EXTRACFLAGS
