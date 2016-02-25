@@ -7,8 +7,8 @@
 *	       set
 * Original Creator:  Colton Schmidt
 * Date of Creation:  01/10/15
-* Last Editor:	     Colton Schmidt
-* Date of Last Edit: 01/10/15
+* Last Editor:	     Bailey Tye
+* Date of Last Edit: 25/02/16
 */
 
 
@@ -93,6 +93,7 @@ void add(uint16_t addAddress){
 	uint8_t temp1 = regA.data;
 	uint8_t temp2 = MAINMEM[addAddress].data;
 	uint8_t result = temp1 + temp2;
+	result += (regSTAT.data & 0x1);
 	regA.data = result & 0xF;
 
 	//Set overflow bit
